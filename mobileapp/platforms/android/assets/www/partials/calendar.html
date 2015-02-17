@@ -1,0 +1,20 @@
+<div class="clearfix small-12">
+  <h4><a href="#" ng-click="showWanted = !showWanted">Wanted</a></h4>
+
+  <div classs="small-12" ng-repeat="episode in missing" data-ng-include data-src="'partials/episode.html'" ng-show="showWanted"></div>
+</div>
+<div class="clearfix small-12">
+  <h4><a href="#" ng-init="showToday = true" ng-click="showToday = !showToday">Today</a></h4>
+
+  <div classs="small-12" ng-repeat="episode in calendar | filter:todayFilter" data-ng-include data-src="'partials/episode.html'"  ng-show="showToday"></div>
+</div>
+<div class="clearfix small-12">
+  <h4><a href="#" ng-init="showTomorrow = true" ng-click="showTomorrow = !showTomorrow">Tomorrow</a></h4>
+
+  <div classs="small-12" ng-repeat="episode in calendar | filter:tomorrowFilter" data-ng-include data-src="'partials/episode.html'"  ng-show="showTomorrow"></div>
+</div>
+<div class="clearfix small-12">
+  <h4><a href="#" ng-click="showLater = !showLater">Later</a></h4>
+
+  <div classs="small-12" ng-repeat="episode in calendar | filter:laterFilter | orderBy : 'airDate'" data-ng-include data-src="'partials/episode.html'" ng-show="showLater"></div>
+</div>

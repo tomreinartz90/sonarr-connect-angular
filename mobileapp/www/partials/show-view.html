@@ -1,0 +1,37 @@
+<div class="show"> 
+  <div class="row banner" style="background-image: url({{serie.fanartImage}})"></div>
+  <div class="row show-information">
+    <div class="small-4 poster"><img src="{{serie.posterImage}}" style="width: 100%; height: auto;"></div>
+  </div>
+  <div class="small-7 small-offset-5 show-info">
+    <h2><span id="title">{{serie.title}}</span></h2>
+    <h6 id="start-year">
+      <i class="fi-social-picasa"></i>{{serie.year}}
+    </h6>
+    <h6 id="show-status">
+      <i class="fi-play"></i>{{serie.status}}
+    </h6>
+    <h6><i class="fi-book"></i>
+      <span id="seasons">Seasons: {{serie.seasonCount}}</span>
+      <span id="episodes" class="episodes label">{{serie.episodeFileCount}} / {{serie.episodeCount}}</span>
+    </h6>
+    <h6><i class="fi-calendar"></i>
+      <span id="air-time">{{serie.airTime}}</span> on 
+      <span id="network" class="network label secondary round">{{serie.network}}</span>
+    </h6>
+  </div>
+  <div class="small-12">
+    <p id="summary" class="summary">{{serie.overview}}</p>
+  </div>
+  <div class="row episodes">
+    <div class="season-selector">
+      <div class="small-8 columns">      
+        <select id="selected-season">
+          <option value="season-1">loading episodes</option>
+        </select>
+        </label> </div>
+    <div class="small-4 columns" id="watched"> </div>
+  </div>
+
+</div>
+</div>
