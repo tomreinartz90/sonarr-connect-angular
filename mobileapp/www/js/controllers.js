@@ -99,6 +99,8 @@ angular.module('sonarrConnectApp.controllers',[])
 
 
   //set dates for filtering
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
   var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
   tomorrow.setHours(0, 0, 0, 0);
   var dayAfterTomorrow = new Date(new Date().getTime() + 48 * 60 * 60 * 1000);
@@ -106,7 +108,7 @@ angular.module('sonarrConnectApp.controllers',[])
 
   //filter today
   var todayFilter = function (episode) { 
-    if(new Date(episode.episode.airDateUtc).valueOf() >= new Date().setHours(0, 0, 0, 0).valueOf() && new Date(episode.episode.airDateUtc).valueOf() <= tomorrow.valueOf()) { 
+    if(new Date(episode.episode.airDateUtc).valueOf() >= today.valueOf() && new Date(episode.episode.airDateUtc).valueOf() <= tomorrow.valueOf()) { 
       return true;
     } else { 
       return false;

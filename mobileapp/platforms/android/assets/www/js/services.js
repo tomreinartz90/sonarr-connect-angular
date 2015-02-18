@@ -4,6 +4,52 @@
 
 angular.module('sonarrConnectApp.services',['ngResource'])
 //get data for movie list
+.factory('DataFactory',function($resource, $q, serieModel, episodeModel, Serie, Series, History, Missing, Calendar){
+  /* define variables */
+
+  var data = {};
+  data.series = {};
+  data.episodes = {};//episodes by seriesid
+  data.calendar = {};
+  data.wanted = {};
+  data.history = {};
+  data.config = {};
+
+
+  if(typeof localStorage.getItem('series') === "string"){
+    data.series = JSON.parse(localStorage.getItem('series')); 
+  }
+
+  /* get all series */
+  data.getSeries = function(){
+    var seriesList = {};
+    var SeriesRequestData = Series.query(function(response) {
+      //process data
+      angular.forEach(SeriesRequestData, function(value, key) {
+        seriesList[value.id] = new serieModel.build(value);
+      });
+
+      //store data in local storage
+      return $q.when(seriesList).then(function(response){
+        angular.copy(seriesList, data.series);
+        localStorage.setItem('series', JSON.stringify(data.series));   
+      });
+    });
+  }
+
+  data.getSerie = function (id) { 
+    var serie = {}
+    var SerieRequestData = Serie.query({id: id}, function(response) {
+      serie = new serieModel.build(response);
+      return $q.when(serie).then(function(response){
+        angular.copy(serie, data.series[id]);
+        localStorage.setItem('series', JSON.stringify(data.series));  
+      });
+    });
+  }
+
+  return data;
+})
 .factory('Series',function($resource){
   return $resource(
     'http://nas.tomreinartz.com:8989/api/series/?page=1&sortKey=title&sortDir=desc&apikey=7936875896514603891816219d4daaf0',
@@ -49,7 +95,6 @@ angular.module('sonarrConnectApp.services',['ngResource'])
   }
 })
 .service('ImageService', function(Config){
-  Config.url
   this.getImage = function(images, imageType){
     if(typeof images == "object"){
 
@@ -70,8 +115,31 @@ angular.module('sonarrConnectApp.services',['ngResource'])
     }    
   }
 })
-.service('popupService',function($window){
-  this.showPopup=function(message){
-    return $window.confirm(message);
+.service('UtilService',function($window){
+  //format episodenumbers to match scene formatting
+  this.formatEpisodeNumer = function(seasonNumber, episodeNumber) {
+    var episodeNum = "S" + (seasonNumber.toString().length === 1 ? '0' : '') + seasonNumber + "E" + (episodeNumber.toString().length === 1 ? '0' : '') + episodeNumber;
+    return episodeNum;
+  }
+  this.calculateEpisodeQuoteColor = function(episodeFileCount, totalEpisodeCount, monitored, status) {
+    var episodeQuote = {
+      'continuing' : 'label regular',
+      'ended' : 'label success',
+      'missing-monitored' : 'label alert',
+      'missing-not-monitored' : 'label warning'
+    }
+
+    var label = ""
+    if (episodeFileCount == totalEpisodeCount)
+      if (status == 'continuing')
+        label = episodeQuote['continuing'];
+      else
+        label = episodeQuote['ended'];
+    else if (monitored)
+      label = episodeQuote['missing-monitored'];
+    else
+      label = episodeQuote['missing-not-monitored'];
+
+    return label;
   }
 });

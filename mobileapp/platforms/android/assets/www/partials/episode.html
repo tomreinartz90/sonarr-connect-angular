@@ -1,6 +1,7 @@
-<div class="episode" >
-  <div class="small-10 columns episode-info"> 
-    <div class="series-title" ui-sref="viewMovie({id:episode.seriesId})">{{episode.showTitle}}</div>
+<div class="episode" ng-controller="episodeController">
+  <div class="small-10 columns episode-info" > 
+<!--    ui-sref="viewMovie({id:episode.seriesId})"-->
+    <div class="series-title" ng-click="episode.showButtons = true">{{episode.showTitle}}</div>
     <div class="episode-title">
       <span class="episodenum">{{episode.number}}</span>
       <span class="episodename">{{episode.title}}</span>
@@ -8,9 +9,11 @@
     <div class="episode-info ">
       <span class="status label">{{episode.status}}</span>
       <span class="date">{{airdate}}</span>
-      <span class="auto-search"><i class="fi-magnifying-glass"></i></span>
-      <span class="manual-search"><i class="fi-torso"></i></span></div>
+    </div>
   </div>
-  <div class="small-2 columns watched-indicator fi-bookmark">
+  <div  class="small-2 columns" ng-show="{{episode.showButtons}}">
+    <div class="small-12 watched-indicator fi-bookmark" ng-click="changeWatchedStatus(episode.episodeId)"></div>
+    <span class="auto-search" ng-click="changeWatchedStatus(episode.episodeId)"><i class="fi-magnifying-glass"></i></span>
+    <span class="manual-search" ng-click="changeWatchedStatus(episode.episodeId)"><i class="fi-torso"></i></span>
   </div> 
 </div>

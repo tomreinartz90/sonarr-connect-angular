@@ -2,7 +2,7 @@
  * Created by Sandeep on 01/06/14.
  */
 
-angular.module('sonarrConnectApp',['ui.router','ngResource','sonarrConnectApp.controllers','sonarrConnectApp.services']);
+angular.module('sonarrConnectApp',['ui.router','ngResource','sonarrConnectApp.controllers','sonarrConnectApp.services','sonarrConnectApp.models']);
 
 angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider){
   $stateProvider.state('series',{
@@ -26,7 +26,9 @@ angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider)
   document.addEventListener("deviceready", function(){
     $state.go('calendar');
   }, false);
-  $state.go('calendar');
+  document.addEventListener("ready", function() {
+    $state.go('calendar');
+  });
 });
 
 config = {

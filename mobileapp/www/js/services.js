@@ -64,9 +64,12 @@ angular.module('sonarrConnectApp.services',['ngResource'])
     {'query': { method: 'GET', isArray: false }}
   );
 })
-.factory('Calendar',function($resource){
+.factory('Calendar',function($resource, UtilService){
+  var today = UtilService.formatDate(new Date());
+  var endDate = UtilService.formatDate(new Date(), 7);
+
   return $resource(
-    'http://nas.tomreinartz.com:8989/api/calendar?page=1&sortKey=airDateUtc&sortDir=desc&start=2015-2-10&end=2015-2-17&apikey=7936875896514603891816219d4daaf0',
+    'http://nas.tomreinartz.com:8989/api/calendar?start='+ today +'&end='+ endDate +'&apikey=7936875896514603891816219d4daaf0',
     { method: 'getTask', q: '*' }, // Query parameters
     {'query': { method: 'GET', isArray: true }}
   );
@@ -121,6 +124,7 @@ angular.module('sonarrConnectApp.services',['ngResource'])
     var episodeNum = "S" + (seasonNumber.toString().length === 1 ? '0' : '') + seasonNumber + "E" + (episodeNumber.toString().length === 1 ? '0' : '') + episodeNumber;
     return episodeNum;
   }
+
   this.calculateEpisodeQuoteColor = function(episodeFileCount, totalEpisodeCount, monitored, status) {
     var episodeQuote = {
       'continuing' : 'label regular',
@@ -141,5 +145,11 @@ angular.module('sonarrConnectApp.services',['ngResource'])
       label = episodeQuote['missing-not-monitored'];
 
     return label;
+  }
+
+  this.formatDate =  function(date, positiveOffset) {
+    if (positiveOffset != null)
+      date.setDate(date.getDate() + parseInt(positiveOffset));
+    return (date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (date.getDate()));
   }
 });
