@@ -7,17 +7,27 @@ angular.module('sonarrConnectApp.controllers',[])
 
   $scope.series = DataFactory.series;
 
+  $scope.$on('series:updated', function(event,data) {
+    $scope.series = DataFactory.series;
+  });
+
   //request all series
   DataFactory.getSeries();
 })
 //Serie view controller
-.controller('SerieViewController',function($scope,$stateParams,DataFactory){
+.controller('SerieViewController',function($scope,$state,$window,$stateParams,DataFactory){
   //map missing data 
-  if(typeof DataFactory.series[$stateParams.id] == "object")
-    $scope.serie = DataFactory.series[$stateParams.id];
+  //  if(typeof DataFactory.series[$stateParams.id] == "object")
+  $scope.serie = DataFactory.series[$stateParams.id];
+
+  $scope.$on('series:updated', function(event,data) {
+    if(typeof data.series[$stateParams.id] == "object")
+      $scope.serie = data.series[$stateParams.id];
+  });
+
 
   //get updated serie data from api
-  DataFactory.getSeries();
+  DataFactory.getSerie($stateParams.id);
 })
 //history list controller
 .controller('HistoryListController',function($scope,$state,$stateParams,History,episodeModel){
@@ -141,5 +151,14 @@ angular.module('sonarrConnectApp.controllers',[])
 .controller('episodeController', function($scope,$stateParams){
   $scope.changeWatchedStatus = function(episodeId){
     console.log(episodeId);
+  }  
+  $scope.autoMaticDownload = function(episodeId){
+    console.log(episodeId);
+    $scope.showButtons = false;
+  }  
+  $scope.manualDownload = function(episodeId){
+    console.log(episodeId);
+    $scope.showButtons = false;
   }
+  $scope.showButtons = false;
 });

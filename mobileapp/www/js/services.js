@@ -4,24 +4,24 @@
 
 angular.module('sonarrConnectApp.services',['ngResource'])
 //get data for movie list
-.factory('DataFactory',function($resource, $q, serieModel, episodeModel, Serie, Series, History, Missing, Calendar){
+.factory('DataFactory',function($resource, $q, $rootScope, serieModel, episodeModel, Serie, Series, History, Missing, Calendar){
   /* define variables */
 
-  var data = {};
-  data.series = {};
-  data.episodes = {};//episodes by seriesid
-  data.calendar = {};
-  data.wanted = {};
-  data.history = {};
-  data.config = {};
+  var df = this;
+  df.series = {};
+  df.episodes = {};//episodes by seriesid
+  df.calendar = {};
+  df.wanted = {};
+  df.history = {};
+  df.config = {};
 
 
   if(typeof localStorage.getItem('series') === "string"){
-    data.series = JSON.parse(localStorage.getItem('series')); 
+    df.series = JSON.parse(localStorage.getItem('series')); 
   }
 
   /* get all series */
-  data.getSeries = function(){
+  df.getSeries = function(){
     var seriesList = {};
     var SeriesRequestData = Series.query(function(response) {
       //process data
@@ -30,25 +30,41 @@ angular.module('sonarrConnectApp.services',['ngResource'])
       });
 
       //store data in local storage
-      return $q.when(seriesList).then(function(response){
-        angular.copy(seriesList, data.series);
-        localStorage.setItem('series', JSON.stringify(data.series));   
-      });
+      df.series = seriesList;
+      localStorage.setItem('series', JSON.stringify(df.series));   
+      $rootScope.$broadcast('series:updated', df);
     });
   }
 
-  data.getSerie = function (id) { 
-    var serie = {}
-    var SerieRequestData = Serie.query({id: id}, function(response) {
+  df.getSerie = function (id) { 
+    var serie = {};
+    var serieId = id;
+
+    var SerieRequestData = Serie.query({id: serieId}, function(response) {
+      //process data
       serie = new serieModel.build(response);
-      return $q.when(serie).then(function(response){
-        angular.copy(serie, data.series[id]);
-        localStorage.setItem('series', JSON.stringify(data.series));  
-      });
+
+      df.series[serieId] = serie;
+      localStorage.setItem('series', JSON.stringify(df.series));  
+      $rootScope.$broadcast('series:updated', df);
     });
   }
 
-  return data;
+  df.getCalendar = function () { 
+    var serie = {};
+    var serieId = id;
+
+    var SerieRequestData = Serie.query({id: serieId}, function(response) {
+      //process data
+      serie = new serieModel.build(response);
+
+      df.series[serieId] = serie;
+      localStorage.setItem('series', JSON.stringify(df.series));  
+      $rootScope.$broadcast('series:updated', df);
+    });
+  }
+
+  return df;
 })
 .factory('Series',function($resource){
   return $resource(
