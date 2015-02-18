@@ -52,7 +52,6 @@ angular.module('sonarrConnectApp.models',[])
       this.episodeId = data.episode.id;
       this.overview = data.episode.overview;
       this.status = data.status;
-      this.showButtons = false;
     } 
   }
 
