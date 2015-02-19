@@ -3,34 +3,46 @@ angular.module('sonarrConnectApp.controllers',[])
 //series list controller
 .controller('SerieListController',function($scope,$state,$window,serieModel,DataFactory){
   //map missing data
-
-
-  $scope.series = DataFactory.series;
+  updateSeriesListScope();
 
   $scope.$on('series:updated', function(event,data) {
-    $scope.series = DataFactory.series;
+    updateSeriesListScope();
   });
+
+  function updateSeriesListScope(){
+    series = [];
+    angular.forEach(DataFactory.series, function(value, key) {
+      series.push(new serieModel.build(value));
+    });
+    $scope.series = series; 
+    delete series;
+  }
 
   //request all series
   DataFactory.getSeries();
 })
 //Serie view controller
-.controller('SerieViewController',function($scope,$state,$window,$stateParams,DataFactory){
+.controller('SerieViewController',function($scope,$state,$window,$stateParams,DataFactory, serieModel){
   //map missing data 
-  //  if(typeof DataFactory.series[$stateParams.id] == "object")
-  $scope.serie = DataFactory.series[$stateParams.id];
+  updateSerieScope();
 
   $scope.$on('series:updated', function(event,data) {
-    if(typeof data.series[$stateParams.id] == "object")
-      $scope.serie = data.series[$stateParams.id];
+    if(typeof DataFactory.series[$stateParams.id] == "object")
+      updateSerieScope();
   });
+
+  function updateSerieScope(){
+    console.log(DataFactory.series[$stateParams.id]);
+    console.log($stateParams.id);
+    $scope.serie = new serieModel.build(DataFactory.series[$stateParams.id]);
+  }
 
 
   //get updated serie data from api
   DataFactory.getSerie($stateParams.id);
 })
 //history list controller
-.controller('HistoryListController',function($scope,$state,$stateParams,History,episodeModel){
+.controller('HistoryListController',function($scope,$state,$stateParams,History,episodeModel, DataFactory){
   //get history data and store it into var : data
   var historyData = History.query(function(){
     newHistoryData = [];
@@ -46,7 +58,7 @@ angular.module('sonarrConnectApp.controllers',[])
 
 
 //calendar view controller
-.controller('CalendarListController',function($scope,$stateParams,$filter,Calendar, Missing, episodeModel){
+.controller('CalendarListController',function($scope,$stateParams,$filter,Calendar, Wanted, episodeModel, DataFactory, UtilService){
   //get data from service
   //  $scope.calendar = Calendar.query();
   function calendarStatus (episode){ 
@@ -60,39 +72,43 @@ angular.module('sonarrConnectApp.controllers',[])
     }
   }
 
-  //map missing data
-  var calendarData = Calendar.query(function(){
+  updateCalendarScope(DataFactory.calendar);
+  $scope.$on('calendar:updated', function(event,data) {
+    updateCalendarScope(DataFactory.calendar)
+  });
+  //get updated calendar data
+  DataFactory.getCalendar();
+
+  function updateCalendarScope(calendarData){
+    //map missing data
     newTodayCalendarData = [];
     newTomorrowCalendarData = [];
     newLaterCalendarData = [];
-    angular.forEach(calendarData, function(value, key) {
-
-      var data = {};
-      data.status = calendarStatus(value);
-      data.series = value.series;
-      delete value.series;
-      data.episode = value;
-
+    angular.forEach(calendarData, function(data, key) {
       //put data in right list
-      if(todayFilter(data))
+      if(UtilService.todayFilter(data))
         newTodayCalendarData.push(new episodeModel.build(data));      
-      else if(tomorrowFilter(data))
+      else if(UtilService.tomorrowFilter(data))
         newTomorrowCalendarData.push(new episodeModel.build(data));      
-      else 
+      else if(UtilService.laterFilter(data))
         newLaterCalendarData.push(new episodeModel.build(data));
     });
-
     //set data on scope
     $scope.today = newTodayCalendarData; 
     $scope.tomorrow = newTomorrowCalendarData; 
-    $scope.later = newLaterCalendarData; 
+    $scope.later = newLaterCalendarData;
+  }
 
+  updateMissingScope(DataFactory.wanted);
+  $scope.$on('wanted:updated', function(event,data) {
+    updateMissingScope(DataFactory.wanted)
   });
-
+  //get updated calendar data
+  DataFactory.getWanted();
   //map missing data
-  var missingData = Missing.query(function(){
+  function updateMissingScope(missingData){
     newMissingData = [];
-    angular.forEach(missingData.records, function(value, key) {
+    angular.forEach(missingData, function(value, key) {
 
       var data = {};
       data.status = calendarStatus(value);
@@ -104,47 +120,9 @@ angular.module('sonarrConnectApp.controllers',[])
       newMissingData.push(new episodeModel.build(data));
     });
     $scope.missing = newMissingData; 
-    $scope.totalMissing = missingData.totalRecords;
-  });
-
-
-  //set dates for filtering
-  var today = new Date();
-  today.setHours(0, 0, 0, 0);
-  var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-  tomorrow.setHours(0, 0, 0, 0);
-  var dayAfterTomorrow = new Date(new Date().getTime() + 48 * 60 * 60 * 1000);
-  dayAfterTomorrow.setHours(0, 0, 0, 0);
-
-  //filter today
-  var todayFilter = function (episode) { 
-    if(new Date(episode.episode.airDateUtc).valueOf() >= today.valueOf() && new Date(episode.episode.airDateUtc).valueOf() <= tomorrow.valueOf()) { 
-      return true;
-    } else { 
-      return false;
-    }
+    $scope.totalMissing = DataFactory.totalMissing;
   }
 
-  //filter tomorrow
-  var tomorrowFilter = function (episode) { 
-    if(new Date(episode.episode.airDateUtc).valueOf() >= tomorrow.valueOf() 
-       && new Date(episode.episode.airDateUtc).valueOf() <= dayAfterTomorrow.valueOf()) {
-      return true;
-    }else {
-      return false;
-    }
-  }
-
-  //filter later
-  var laterFilter = function (episode) { 
-    if(new Date(episode.airDateUtc).valueOf() >= dayAfterTomorrow.valueOf()){
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  console.log($scope.today);
 
 })
 //episode controller

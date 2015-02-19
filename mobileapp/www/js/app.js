@@ -27,8 +27,8 @@ angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider)
     $state.go('calendar');
   }, false);
   document.addEventListener("ready", function() {
-    $state.go('calendar');
   });
+  $state.go('calendar');
 });
 
 config = {

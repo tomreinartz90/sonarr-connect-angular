@@ -5,30 +5,26 @@ angular.module('sonarrConnectApp.models',[])
    */
   function serieModel(data) {
     // Public properties, assigned to the instance ('this')
-    serie = {}
-    serie.airTime = data.airTime;
-    serie.cleanTitle = data.cleanTitle;
-    serie.episodeCount = data.episodeCount;
-    serie.episodeFileCount = data.episodeFileCount; 
-    serie.monitored = data.monitored;
-    serie.network = data.network;
-    serie.seasonCount = data.seasonCount;
-    serie.sortTitle = data.sortTitle;
-    serie.title = data.title;
-    serie.year = data.year;
-    serie.id = data.id;
-    serie.overview = data.overview;
-    serie.images = data.images;
-    serie.posterImage = ImageService.getImage(data.images, "poster");
-    serie.fanartImage = ImageService.getImage(data.images, "fanart");
-    
-    //return data
-    return serie;
+    this.airTime = data.airTime;
+    this.cleanTitle = data.cleanTitle;
+    this.episodeCount = data.episodeCount;
+    this.episodeFileCount = data.episodeFileCount; 
+    this.monitored = data.monitored;
+    this.network = data.network;
+    this.seasonCount = data.seasonCount;
+    this.sortTitle = data.sortTitle;
+    this.title = data.title;
+    this.year = data.year;
+    this.id = data.id;
+    this.overview = data.overview;
+    this.images = data.images;
+    this.posterImage = ImageService.getImage(data.images, "poster");
+    this.fanartImage = ImageService.getImage(data.images, "fanart");
   }
 
   serieModel.build = function(data){
     if(typeof data == "object") { 
-      return serieModel(data);
+      return new serieModel(data);
     }
   }
   /**

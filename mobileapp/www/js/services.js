@@ -4,7 +4,7 @@
 
 angular.module('sonarrConnectApp.services',['ngResource'])
 //get data for movie list
-.factory('DataFactory',function($resource, $q, $rootScope, serieModel, episodeModel, Serie, Series, History, Missing, Calendar){
+.factory('DataFactory',function($resource, $q, $rootScope, serieModel, episodeModel, Serie, Series, History, Wanted, Calendar){
   /* define variables */
 
   var df = this;
@@ -13,11 +13,29 @@ angular.module('sonarrConnectApp.services',['ngResource'])
   df.calendar = {};
   df.wanted = {};
   df.history = {};
+  df.totalMissing = 0;
   df.config = {};
 
 
+  df.calendarStatus = function (episode){ 
+    if(episode.hasFile)
+    {
+      return 'Downloaded';
+    }
+    else
+    {
+      return 'missing';
+    }
+  }
+
   if(typeof localStorage.getItem('series') === "string"){
     df.series = JSON.parse(localStorage.getItem('series')); 
+  }
+  if(typeof localStorage.getItem('calendar') === "string"){
+    df.calendar = JSON.parse(localStorage.getItem('calendar')); 
+  }
+  if(typeof localStorage.getItem('wanted') === "string"){
+    df.history = JSON.parse(localStorage.getItem('wanted')); 
   }
 
   /* get all series */
@@ -26,13 +44,13 @@ angular.module('sonarrConnectApp.services',['ngResource'])
     var SeriesRequestData = Series.query(function(response) {
       //process data
       angular.forEach(SeriesRequestData, function(value, key) {
-        seriesList[value.id] = new serieModel.build(value);
+        seriesList[value.id] = value;
       });
 
       //store data in local storage
       df.series = seriesList;
       localStorage.setItem('series', JSON.stringify(df.series));   
-      $rootScope.$broadcast('series:updated', df);
+      $rootScope.$broadcast('series:updated');
     });
   }
 
@@ -42,70 +60,109 @@ angular.module('sonarrConnectApp.services',['ngResource'])
 
     var SerieRequestData = Serie.query({id: serieId}, function(response) {
       //process data
-      serie = new serieModel.build(response);
+      df.series[serieId] = SerieRequestData;
+      localStorage.setItem('series', JSON.stringify(df.series));  
+      $rootScope.$broadcast('series:updated');
+    });
+  }  
+  
+  df.getEpisodes = function (id) { 
+    var episodes = {};
+    var serieId = id;
+
+    var SerieRequestData = Episodes.query({id: serieId}, function(response) {
+      //process data
 
       df.series[serieId] = serie;
       localStorage.setItem('series', JSON.stringify(df.series));  
-      $rootScope.$broadcast('series:updated', df);
+      $rootScope.$broadcast('series:updated');
     });
   }
 
   df.getCalendar = function () { 
-    var serie = {};
-    var serieId = id;
+    var calendarData = Calendar.query(function(){
+      angular.forEach(calendarData, function(value, key) {
+        var data = {};
+        data.status = df.calendarStatus(value);
+        data.series = value.series;
+        delete value.series;
+        data.episode = value;
 
-    var SerieRequestData = Serie.query({id: serieId}, function(response) {
-      //process data
-      serie = new serieModel.build(response);
+        df.calendar[key] = data;
+        localStorage.setItem('calendar', JSON.stringify(df.calendar));  
+        $rootScope.$broadcast('calendar:updated');
+      });
+    });
 
-      df.series[serieId] = serie;
-      localStorage.setItem('series', JSON.stringify(df.series));  
-      $rootScope.$broadcast('series:updated', df);
+  }
+
+
+  df.getWanted = function () { 
+    var wantedData = Wanted.query(function(){
+      angular.forEach(wantedData.records, function(value, key) {
+
+        var data = {};
+        data.status = df.calendarStatus(value);
+        data.series = value.series;
+        delete value.series;
+        data.episode = value;
+
+        df.history[key] = data;
+      });
+      df.totalMissing = wantedData.totalRecords;
+      localStorage.setItem('wanted', JSON.stringify(df.history));  
+      $rootScope.$broadcast('wanted:updated');
     });
   }
 
   return df;
 })
-.factory('Series',function($resource){
+.factory('Series',function($resource, Config){
   return $resource(
-    'http://nas.tomreinartz.com:8989/api/series/?page=1&sortKey=title&sortDir=desc&apikey=7936875896514603891816219d4daaf0',
+    Config.url + 'api/series/?page=1&sortKey=title&sortDir=desc&apikey=' + Config.apiKey,
     { method: 'getTask', q: '*' }, // Query parameters
     {'query': { method: 'GET', isArray: true }}
   );
 })
-.factory('Serie',function($resource){
+.factory('Serie',function($resource, Config){
   return $resource(
-    'http://nas.tomreinartz.com:8989/api/series/:id?page=1&sortKey=title&sortDir=desc&apikey=7936875896514603891816219d4daaf0',
+    Config.url + 'api/series/:id?page=1&sortKey=title&sortDir=desc&apikey=' + Config.apiKey,
     { method: 'getTask', q: '*' }, // Query parameters
     {'query': { method: 'GET', isArray: false }}
   );
 })
-.factory('Calendar',function($resource, UtilService){
+.factory('Episodes',function($resource, Config){
+  return $resource(
+    Config.url + '/api/episode?seriesId=:id&apikey=7936875896514603891816219d4daaf0' + Config.apiKey,
+    { method: 'getTask', q: '*' }, // Query parameters
+    {'query': { method: 'GET', isArray: false }}
+  );
+})
+.factory('Calendar',function($resource, UtilService, Config){
   var today = UtilService.formatDate(new Date());
   var endDate = UtilService.formatDate(new Date(), 7);
 
   return $resource(
-    'http://nas.tomreinartz.com:8989/api/calendar?start='+ today +'&end='+ endDate +'&apikey=7936875896514603891816219d4daaf0',
+    Config.url + 'api/calendar?start='+ today +'&end='+ endDate +'&apikey=' + Config.apiKey,
     { method: 'getTask', q: '*' }, // Query parameters
     {'query': { method: 'GET', isArray: true }}
   );
 })
-.factory('Missing',function($resource){
+.factory('Wanted',function($resource, Config){
   return $resource(
-    'http://nas.tomreinartz.com:8989/api/wanted/missing?page=1&pageSize=15&sortKey=airDateUtc&sortDir=desc&apikey=7936875896514603891816219d4daaf0',
+    Config.url + 'api/wanted/missing?page=1&pageSize=15&sortKey=airDateUtc&sortDir=desc&apikey=' + Config.apiKey,
     { method: 'getTask', q: '*' }, // Query parameters
     {'query': { method: 'GET', isArray: false }}
   );
 })
-.factory('History',function($resource){
+.factory('History',function($resource, Config){
   return $resource(
-    'http://nas.tomreinartz.com:8989/api/history?page=1&pageSize=15&sortKey=date&sortDir=desc&apikey=7936875896514603891816219d4daaf0',
+    Config.url + 'api/history?page=1&pageSize=15&sortKey=date&sortDir=desc&apikey=' + Config.apiKey,
     { method: 'getTask', q: '*' }, // Query parameters
     {'query': { method: 'GET', isArray: false }}
   );
 })
 .service('Config', function(){
-
   var config = angular.fromJson(localStorage.getItem('config'));
   return config;
 
@@ -167,5 +224,42 @@ angular.module('sonarrConnectApp.services',['ngResource'])
     if (positiveOffset != null)
       date.setDate(date.getDate() + parseInt(positiveOffset));
     return (date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (date.getDate()));
+  }
+
+
+  //set dates for filtering
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  var tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+  tomorrow.setHours(0, 0, 0, 0);
+  var dayAfterTomorrow = new Date(new Date().getTime() + 48 * 60 * 60 * 1000);
+  dayAfterTomorrow.setHours(0, 0, 0, 0);
+
+  //filter today
+  this.todayFilter = function (episode) { 
+    if(new Date(episode.episode.airDateUtc).valueOf() >= today.valueOf() && new Date(episode.episode.airDateUtc).valueOf() <= tomorrow.valueOf()) { 
+      return true;
+    } else { 
+      return false;
+    }
+  }
+
+  //filter tomorrow
+  this.tomorrowFilter = function (episode) { 
+    if(new Date(episode.episode.airDateUtc).valueOf() >= tomorrow.valueOf() 
+       && new Date(episode.episode.airDateUtc).valueOf() <= dayAfterTomorrow.valueOf()) {
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  //filter later
+  this.laterFilter = function (episode) { 
+    if(new Date(episode.airDateUtc).valueOf() >= dayAfterTomorrow.valueOf()){
+      return true;
+    } else {
+      return false;
+    }
   }
 });
