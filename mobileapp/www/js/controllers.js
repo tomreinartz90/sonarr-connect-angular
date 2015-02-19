@@ -5,6 +5,7 @@ angular.module('sonarrConnectApp.controllers',[])
   //map missing data
   console.log();
   updateSeriesListScope();
+  $scope.search = '';
 
   $scope.$on('series:updated', function(event,data) {
     updateSeriesListScope();
@@ -23,36 +24,64 @@ angular.module('sonarrConnectApp.controllers',[])
   DataFactory.getSeries();
 })
 //Serie view controller
-.controller('SerieViewController',function($scope,$state,$window,$stateParams,DataFactory, serieModel){
+.controller('SerieViewController',function($scope,$state,$window,$stateParams,DataFactory,serieModel, episodeModel){
   //map missing data 
   updateSerieScope();
+  updateSerieEpisodeScope();
 
   $scope.$on('series:updated', function(event,data) {
     if(typeof DataFactory.series[$stateParams.id] == "object")
       updateSerieScope();
   });
 
+  $scope.$on('episodes:updated', function(event,data) {
+    updateSerieEpisodeScope();
+  });
+
+
+
+
   function updateSerieScope(){
-    $scope.serie = new serieModel.build(DataFactory.series[$stateParams.id]);
+    var serie = new serieModel.build(DataFactory.series[$stateParams.id]);
+    console.log(serie);
+    $scope.serie = serie;
+  }
+  function updateSerieEpisodeScope(){
+    if(typeof DataFactory.episodes[$stateParams.id] == "object"){
+      var episodes = [];
+      angular.forEach(DataFactory.episodes[$stateParams.id], function(value, key) {
+        value.status = value.eventType;
+        episodes.push(JSON.parse(JSON.stringify(new episodeModel.build(value))));
+      });
+      $scope.episodes = episodes; 
+    }
   }
 
 
   //get updated serie data from api
   DataFactory.getSerie($stateParams.id);
+  DataFactory.getEpisodes($stateParams.id);
+
 })
 //history list controller
-.controller('HistoryListController',function($scope,$state,$stateParams,History,episodeModel, DataFactory){
+.controller('HistoryListController',function($scope,$state,$stateParams,DataFactory,episodeModel, DataFactory){
   //get history data and store it into var : data
-  var historyData = History.query(function(){
-    newHistoryData = [];
-    angular.forEach(historyData.records, function(value, key) {
-      value.status = value.eventType;
-      newHistoryData.push(new episodeModel.build(value));
-    });
 
-    $scope.history = newHistoryData; 
+  updateHistoryScope();
+  $scope.$on('history:updated', function(event,data) {
+    updateHistoryScope();
   });
 
+  function updateHistoryScope(){
+    newHistoryData = {};
+    angular.forEach(DataFactory.history, function(value, key) {
+      value.status = value.eventType;
+      newHistoryData[key] = new episodeModel.build(value);
+    });
+    $scope.history = newHistoryData; 
+  }
+
+  DataFactory.getHistory();
 })
 
 
@@ -92,6 +121,7 @@ angular.module('sonarrConnectApp.controllers',[])
       else if(UtilService.laterFilter(data))
         newLaterCalendarData.push(new episodeModel.build(data));
     });
+
     //set data on scope
     $scope.today = newTodayCalendarData; 
     $scope.tomorrow = newTomorrowCalendarData; 
@@ -117,17 +147,20 @@ angular.module('sonarrConnectApp.controllers',[])
 
 })
 //episode controller
-.controller('episodeController', function($scope,$stateParams){
+.controller('episodeController', function($scope,$stateParams, SearchEpisode, LxDialogService){
+  $scope.showDownloadButtons = false;
   $scope.changeWatchedStatus = function(episodeId){
     console.log(episodeId);
   }  
   $scope.autoMaticDownload = function(episodeId){
-    console.log(episodeId);
-    $scope.showButtons = false;
+
+    var episode = SearchEpisode.query({episodeIds: episodeId}, function(response) {
+      console.log(episode);
+      $scope.showDownloadButtons = false;
+    });
   }  
   $scope.manualDownload = function(episodeId){
     console.log(episodeId);
-    $scope.showButtons = false;
+    LxDialogService.open(episodeId);
   }
-  $scope.showButtons = false;
 });

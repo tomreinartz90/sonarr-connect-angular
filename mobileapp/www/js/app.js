@@ -8,7 +8,7 @@ angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider)
   $stateProvider.state('series',{
     url:'/movies',
     templateUrl:'partials/series.html',
-    controller:'SerieListController'
+    controller:'SerieListController',
   }).state('viewMovie',{
     url:'/movies/:id/view',
     templateUrl:'partials/show-view.html',
@@ -22,7 +22,6 @@ angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider)
     templateUrl:'partials/calendar.html',
     controller:'CalendarListController'
   });
-  console.log($stateProvider);
 }).run(function($state){
   document.addEventListener("deviceready", function(){
     $state.go('calendar');

@@ -4,7 +4,7 @@
 
 angular.module('sonarrConnectApp.services',['ngResource'])
 //get data for movie list
-.factory('DataFactory',function($resource, $q, $rootScope, Serie, Series, History, Wanted, Calendar){
+.factory('DataFactory',function($resource, $q, $rootScope, UtilService, Serie, Series, History, Wanted, Episodes, Calendar){
   /* define variables */
 
   var df = this;
@@ -36,10 +36,14 @@ angular.module('sonarrConnectApp.services',['ngResource'])
   }
   if(typeof localStorage.getItem('wanted') === "string"){
     df.history = JSON.parse(localStorage.getItem('wanted')); 
+  }  
+  if(typeof localStorage.getItem('episodes') === "string"){
+    df.episodes = JSON.parse(localStorage.getItem('episodes')); 
   }
 
   /* get all series */
   df.getSeries = function(){
+    UtilService.showLoader();
     var seriesList = {};
     var SeriesRequestData = Series.query(function(response) {
       //process data
@@ -51,11 +55,13 @@ angular.module('sonarrConnectApp.services',['ngResource'])
       df.series = seriesList;
       localStorage.setItem('series', JSON.stringify(df.series));   
       $rootScope.$broadcast('series:updated');
+      UtilService.hideLoader();
     });
     return df.series;
   }
 
   df.getSerie = function (id) { 
+    UtilService.showLoader();
     var serie = {};
     var serieId = id;
 
@@ -64,6 +70,7 @@ angular.module('sonarrConnectApp.services',['ngResource'])
       df.series[serieId] = SerieRequestData;
       localStorage.setItem('series', JSON.stringify(df.series));  
       $rootScope.$broadcast('series:updated');
+      UtilService.hideLoader();
     });
     return df.series[id];
   }  
@@ -71,29 +78,41 @@ angular.module('sonarrConnectApp.services',['ngResource'])
   df.getEpisodes = function (id) { 
     var episodes = {};
     var serieId = id;
-
-    var SerieRequestData = Episodes.query({id: serieId}, function(response) {
+    UtilService.showLoader();
+    var episodeRequestData = Episodes.query({id: serieId}, function(response) {
       //process data
-
-      df.series[serieId] = serie;
-      localStorage.setItem('series', JSON.stringify(df.series));  
-      $rootScope.$broadcast('series:updated');
+      var episodes = {};
+      angular.forEach(episodeRequestData, function(value, key) {
+        var data = {};
+        data.status = df.calendarStatus(value);
+        data.series = value.series;
+        delete value.series;
+        data.episode = value;
+        episodes[key] = data;
+      });
+      df.episodes[serieId] = episodes;
+      localStorage.setItem('episodes', JSON.stringify(df.episodes));  
+      $rootScope.$broadcast('episodes:updated');
+      UtilService.hideLoader();
     });
   }
 
   df.getCalendar = function () { 
+    UtilService.showLoader();
     var calendarData = Calendar.query(function(){
+      df.calendar = {};
       angular.forEach(calendarData, function(value, key) {
         var data = {};
         data.status = df.calendarStatus(value);
         data.series = value.series;
         delete value.series;
         data.episode = value;
-
         df.calendar[key] = data;
-        localStorage.setItem('calendar', JSON.stringify(df.calendar));  
-        $rootScope.$broadcast('calendar:updated');
       });
+
+      localStorage.setItem('calendar', JSON.stringify(df.calendar));  
+      $rootScope.$broadcast('calendar:updated');
+      UtilService.hideLoader();
     });
     return df.calendar;
   }
@@ -101,10 +120,10 @@ angular.module('sonarrConnectApp.services',['ngResource'])
 
   df.getWanted = function () { 
     var wantedData = Wanted.query(function(){
+      df.wanted = {};
       angular.forEach(wantedData.records, function(value, key) {
         var data = {};
         data.status = df.calendarStatus(value);
-
         data.series = value.series;
         delete value.series;
         data.episode = value;
@@ -113,6 +132,25 @@ angular.module('sonarrConnectApp.services',['ngResource'])
       df.totalMissing = wantedData.totalRecords;
       localStorage.setItem('wanted', JSON.stringify(df.wanted));  
       $rootScope.$broadcast('wanted:updated');
+    });
+    return df.history;
+  }  
+
+  df.getHistory = function () { 
+    UtilService.showLoader();
+    var historyData = History.query(function(){
+      angular.forEach(historyData.records, function(value, key) {
+        var data = {};
+        data.status = df.calendarStatus(value);
+
+        data.series = value.series;
+        delete value.series;
+        data.episode = value.episode;
+        df.history[key] = data;
+      });
+      localStorage.setItem('history', JSON.stringify(df.history));  
+      $rootScope.$broadcast('history:updated');
+      UtilService.hideLoader();
     });
     return df.history;
   }
@@ -135,9 +173,15 @@ angular.module('sonarrConnectApp.services',['ngResource'])
 })
 .factory('Episodes',function($resource, Config){
   return $resource(
-    Config.url + '/api/episode?seriesId=:id&apikey=7936875896514603891816219d4daaf0' + Config.apiKey,
-    { method: 'getTask', q: '*' }, // Query parameters
+    Config.url + 'api/episode?seriesId=:id&apikey=' + Config.apiKey,
     {'query': { method: 'GET', isArray: false }}
+  );
+})
+.factory('SearchEpisode',function($resource, Config){
+  return $resource(
+    Config.url + 'api/Command?apikey=' + Config.apiKey,
+    { name: 'episodesearch', episodeIds: '@episodeIds' }, // Query parameters
+    {'query': { method: 'GET', isArray: true }}
   );
 })
 .factory('Calendar',function($resource, UtilService, Config){
@@ -193,11 +237,18 @@ angular.module('sonarrConnectApp.services',['ngResource'])
     }    
   }
 })
-.service('UtilService',function($window){
+.service('UtilService',function($window, LxProgressService){
   //format episodenumbers to match scene formatting
   this.formatEpisodeNumer = function(seasonNumber, episodeNumber) {
     var episodeNum = "S" + (seasonNumber.toString().length === 1 ? '0' : '') + seasonNumber + "E" + (episodeNumber.toString().length === 1 ? '0' : '') + episodeNumber;
     return episodeNum;
+  }
+
+  this.showLoader = function(){
+    LxProgressService.linear.show('#5fa2db', '#progress');
+  }
+  this.hideLoader = function(){
+    LxProgressService.linear.hide();
   }
 
   this.calculateEpisodeQuoteColor = function(episodeFileCount, totalEpisodeCount, monitored, status) {
