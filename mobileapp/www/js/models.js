@@ -31,7 +31,7 @@ angular.module('sonarrConnectApp.models',[])
    * Return the constructor function
    */
   return serieModel;
-}]).factory('episodeModel', ['UtilService', function (UtilService) {
+}]).factory('episodeModel', function(UtilService, DataFactory, ImageService) {
   /**
    * Constructor, with class name
    */
@@ -48,6 +48,8 @@ angular.module('sonarrConnectApp.models',[])
       this.episodeId = data.episode.id;
       this.overview = data.episode.overview;
       this.status = data.status;
+      this.posterImage = ImageService.getImage(DataFactory.series[data.series.id].images, "poster");
+      this.fanartImage = ImageService.getImage(DataFactory.series[data.series.id].images, "fanart");
     } 
   }
 
@@ -60,4 +62,4 @@ angular.module('sonarrConnectApp.models',[])
    * Return the constructor function
    */
   return episodeModel;
-}])
+})

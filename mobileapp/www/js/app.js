@@ -22,6 +22,7 @@ angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider)
     templateUrl:'partials/calendar.html',
     controller:'CalendarListController'
   });
+  console.log($stateProvider);
 }).run(function($state){
   document.addEventListener("deviceready", function(){
     $state.go('calendar');

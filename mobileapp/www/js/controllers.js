@@ -3,6 +3,7 @@ angular.module('sonarrConnectApp.controllers',[])
 //series list controller
 .controller('SerieListController',function($scope,$state,$window,serieModel,DataFactory){
   //map missing data
+  console.log();
   updateSeriesListScope();
 
   $scope.$on('series:updated', function(event,data) {
@@ -32,8 +33,6 @@ angular.module('sonarrConnectApp.controllers',[])
   });
 
   function updateSerieScope(){
-    console.log(DataFactory.series[$stateParams.id]);
-    console.log($stateParams.id);
     $scope.serie = new serieModel.build(DataFactory.series[$stateParams.id]);
   }
 
@@ -109,15 +108,7 @@ angular.module('sonarrConnectApp.controllers',[])
   function updateMissingScope(missingData){
     newMissingData = [];
     angular.forEach(missingData, function(value, key) {
-
-      var data = {};
-      data.status = calendarStatus(value);
-      data.series = value.series;
-      delete value.series;
-      data.episode = value;
-      console.log(value);
-
-      newMissingData.push(new episodeModel.build(data));
+      newMissingData.push(new episodeModel.build(value));
     });
     $scope.missing = newMissingData; 
     $scope.totalMissing = DataFactory.totalMissing;

@@ -4,7 +4,7 @@
 
 angular.module('sonarrConnectApp.services',['ngResource'])
 //get data for movie list
-.factory('DataFactory',function($resource, $q, $rootScope, serieModel, episodeModel, Serie, Series, History, Wanted, Calendar){
+.factory('DataFactory',function($resource, $q, $rootScope, Serie, Series, History, Wanted, Calendar){
   /* define variables */
 
   var df = this;
@@ -52,6 +52,7 @@ angular.module('sonarrConnectApp.services',['ngResource'])
       localStorage.setItem('series', JSON.stringify(df.series));   
       $rootScope.$broadcast('series:updated');
     });
+    return df.series;
   }
 
   df.getSerie = function (id) { 
@@ -64,8 +65,9 @@ angular.module('sonarrConnectApp.services',['ngResource'])
       localStorage.setItem('series', JSON.stringify(df.series));  
       $rootScope.$broadcast('series:updated');
     });
+    return df.series[id];
   }  
-  
+
   df.getEpisodes = function (id) { 
     var episodes = {};
     var serieId = id;
@@ -93,26 +95,26 @@ angular.module('sonarrConnectApp.services',['ngResource'])
         $rootScope.$broadcast('calendar:updated');
       });
     });
-
+    return df.calendar;
   }
 
 
   df.getWanted = function () { 
     var wantedData = Wanted.query(function(){
       angular.forEach(wantedData.records, function(value, key) {
-
         var data = {};
         data.status = df.calendarStatus(value);
+
         data.series = value.series;
         delete value.series;
         data.episode = value;
-
-        df.history[key] = data;
+        df.wanted[key] = data;
       });
       df.totalMissing = wantedData.totalRecords;
-      localStorage.setItem('wanted', JSON.stringify(df.history));  
+      localStorage.setItem('wanted', JSON.stringify(df.wanted));  
       $rootScope.$broadcast('wanted:updated');
     });
+    return df.history;
   }
 
   return df;
