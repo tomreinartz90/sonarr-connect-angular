@@ -1,6 +1,7 @@
+<!--
 <div class="episode" ng-controller="episodeController">
   <div class="small-10 columns episode-info" ng-click="showButtons = !showButtons"> 
-<!--    -->
+        
     <div class="series-title" ui-sref="viewMovie({id:episode.seriesId})">{{episode.showTitle}}</div>
     <div class="episode-title">
       <span class="episodenum">{{episode.number}}</span>
@@ -17,3 +18,19 @@
     <span class="manual-search" ng-click="manualDownload(episode.episodeId)"><i class="fi-torso"></i></span>
   </div> 
 </div>
+-->
+
+<li class="list-row list-row--has-primary list-row--has-secondary">
+  <div class="list-primary-tile">
+    <img class="list-primary-tile__img" src="/images/placeholder/1-square.jpg">
+  </div>
+
+  <div class="list-content-tile list-content-tile--one-line">
+    <strong>{{episode.number}} | {{episode.title}}</strong>
+    <p>{{episode.showTitle}} {{episode.status}} {{airdate}}</p>
+  </div>
+
+  <div class="list-secondary-tile">
+    <i class="icon icon--s icon--green icon--flat mdi mdi-comment"></i>
+  </div>
+</li>
