@@ -1,19 +1,50 @@
+
 <div class="episode" ng-controller="episodeController">
-  <div class="small-10 columns episode-info" > 
-<!--    ui-sref="viewMovie({id:episode.seriesId})"-->
-    <div class="series-title" ng-click="episode.showButtons = true">{{episode.showTitle}}</div>
-    <div class="episode-title">
-      <span class="episodenum">{{episode.number}}</span>
-      <span class="episodename">{{episode.title}}</span>
+<!--list-row--has-primary-->
+  <li class="list-row  list-row--has-secondary" ng-click="showDownloadButtons = !showDownloadButtons" lx-ripple="blue-500">
+<!--
+    <div class="list-primary-tile">
+      <img class="list-primary-tile__img" ng-src="{{episode.posterImage}}">
     </div>
-    <div class="episode-info ">
-      <span class="status label">{{episode.status}}</span>
-      <span class="date">{{airdate}}</span>
+-->
+
+    <div class="list-content-tile list-content-tile--two-lines">
+      <strong>{{::episode.showTitle}}: {{::episode.number}}</strong>
+      <span>{{::episode.title}} | {{episode.status}} {{::airdate}}</span>
+    </div>
+
+    <div class="list-secondary-tile">
+      <i class="icon icon--s icon--blue icon--flat mdi mdi-album"></i>
+    </div>
+  </li>
+  <div class="fullwidth list-row download-buttons" ng-show="showDownloadButtons">
+    <a class="btn btn--m btn--blue btn--raised" ng-click="autoMaticDownload(episode.episodeId)" lx-ripple>Search episode</a>
+    <a class="btn btn--m btn--blue btn--raised" ng-click="manualDownload(episode.episodeId)" lx-ripple>Manual download</a>
+  </div>
+</div>
+
+
+
+<lx-dialog class="dialog dialog--l" id="{{::episode.episodeId}}">
+  <div class="dialog__header">
+    <div class="toolbar bgc-light-blue-500 pl++">
+      <span class="toolbar__label tc-white fs-title">
+         Download {{::episode.showTitle}}: {{::episode.number}}
+      </span>
+
+      <div class="toolbar__right">
+        <button class="btn btn--l btn--white btn--icon" lx-ripple lx-dialog-close>
+          <i class="mdi mdi-close"></i>
+        </button>
+      </div>
     </div>
   </div>
-  <div  class="small-2 columns" ng-show="{{episode.showButtons}}">
-    <div class="small-12 watched-indicator fi-bookmark" ng-click="changeWatchedStatus(episode.episodeId)"></div>
-    <span class="auto-search" ng-click="changeWatchedStatus(episode.episodeId)"><i class="fi-magnifying-glass"></i></span>
-    <span class="manual-search" ng-click="changeWatchedStatus(episode.episodeId)"><i class="fi-torso"></i></span>
-  </div> 
-</div>
+
+  <div class="dialog__content">
+
+  </div>
+
+  <div class="dialog__actions">
+    <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>Cancel</button>
+  </div>
+</lx-dialog>

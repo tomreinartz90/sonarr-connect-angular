@@ -25,10 +25,12 @@ angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider)
 }).run(function($state){
   document.addEventListener("deviceready", function(){
     $state.go('calendar');
+    FastClick.attach(document.body);
   }, false);
-  document.addEventListener("ready", function() {
+  document.addEventListener("DOMContentLoaded", function() {
+    $state.go('calendar');
+    FastClick.attach(document.body);
   });
-  $state.go('calendar');
 });
 
 config = {

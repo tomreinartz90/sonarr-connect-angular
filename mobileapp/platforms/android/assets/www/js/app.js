@@ -2,13 +2,13 @@
  * Created by Sandeep on 01/06/14.
  */
 
-angular.module('sonarrConnectApp',['ui.router','ngResource','sonarrConnectApp.controllers','sonarrConnectApp.services','sonarrConnectApp.models']);
+angular.module('sonarrConnectApp',['ui.router','ngResource','sonarrConnectApp.controllers','sonarrConnectApp.services','sonarrConnectApp.models', 'lumx']);
 
 angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider){
   $stateProvider.state('series',{
     url:'/movies',
     templateUrl:'partials/series.html',
-    controller:'SerieListController'
+    controller:'SerieListController',
   }).state('viewMovie',{
     url:'/movies/:id/view',
     templateUrl:'partials/show-view.html',
@@ -25,9 +25,11 @@ angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider)
 }).run(function($state){
   document.addEventListener("deviceready", function(){
     $state.go('calendar');
+    FastClick.attach(document.body);
   }, false);
-  document.addEventListener("ready", function() {
+  document.addEventListener("DOMContentLoaded", function() {
     $state.go('calendar');
+    FastClick.attach(document.body);
   });
 });
 
