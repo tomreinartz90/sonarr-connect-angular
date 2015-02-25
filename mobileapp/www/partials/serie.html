@@ -1,11 +1,14 @@
-<li class="list-row list-row--has-primary list-row--has-secondary" ui-sref="viewMovie({id:serie.id})">
-  <div class="list-primary-tile">
-    <img class="list-primary-tile__img" ng-src="{{serie.posterImage}}">
+
+
+<div class="grid-block serie" ui-sref="viewMovie({id:serie.id})">
+  <div class="grid-block small-2 poster-icon">
+    <!--    <img class="list-primary-tile__img" ng-src="{{serie.posterImage}}">-->
+    <div style="background-image: url({{serie.posterImage}})"></div>
   </div>
 
-  <div class="list-content-tile list-content-tile--one-line">
-    <strong>{{serie.title}}</strong>
-    <p style="font-size: 1rem;"> {{serie.airTime}} on {{serie.network}} | {{serie.episodeFileCount}} / {{serie.episodeCount}}</p>
+  <div class="grid-block wrap small-10">
+    <h4 class="grid-block wrap small-10">{{serie.title}}</h4>
+    <div class="grid-block wrap small-10" style="font-size: 1rem;"> {{serie.airTime}} on {{serie.network}} | {{serie.episodeFileCount}} / {{serie.episodeCount}}</div>
   </div>
 
-</li>
+</div>

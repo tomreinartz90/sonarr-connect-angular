@@ -1,27 +1,23 @@
 
-<div class="episode" ng-controller="episodeController as EC">
+<div class="episode" ng-controller="episodeController">
   <!--list-row--has-primary-->
-  <li class="list-row  list-row--has-secondary" ng-click="showDownloadButtons = !showDownloadButtons" lx-ripple="blue-500">
-    <!--
-<div class="list-primary-tile">
-<img class="list-primary-tile__img" ng-src="{{episode.posterImage}}">
-</div>
--->
+  <div class="grid-block" ng-click="showDownloadButtons = !showDownloadButtons">
 
     <div class="list-content-tile list-content-tile--two-lines">
-      <strong>{{::episode.showTitle}}: {{::episode.number}}</strong>
-      <span>{{::episode.title}} | {{episode.status}} {{::airdate}}</span>
-    </div>
+      <div class="small-10 grid-block wrap">
+        <div class="small-12 grid-block"><h4>{{::episode.showTitle}}</h4><h6 class="subheader">: {{::episode.number}}</h6></div>
+        <h6 class="small-12 grid-block subheader">{{::episode.title}} | {{episode.status}} {{::airdate}}</h6>
 
-    <div class="list-secondary-tile">
-      <i class="icon icon--s icon--blue icon--flat mdi mdi-album"></i>
+        <div class="small-2 grid-block">
+          <i class="icon icon--s icon--blue icon--flat mdi mdi-album"></i>
+        </div>
+      </div>
+      <div class="small-12" ng-show="showDownloadButtons">
+        <a class="button" ng-click="autoMaticDownload(episode.episodeId)" lx-ripple>Search episode</a>
+        <a class="button" ng-click="manualDownload(episode.episodeId)" lx-ripple>Manual download</a>
+      </div>
     </div>
-  </li>
-  <div class="fullwidth list-row download-buttons" ng-show="showDownloadButtons">
-    <a class="btn btn--m btn--blue btn--raised" ng-click="autoMaticDownload(episode.episodeId)" lx-ripple>Search episode</a>
-    <a class="btn btn--m btn--blue btn--raised" ng-click="manualDownload(episode.episodeId)" lx-ripple>Manual download</a>
   </div>
-
 
 
 

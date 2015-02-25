@@ -2,7 +2,7 @@
  * Created by Sandeep on 01/06/14.
  */
 
-angular.module('sonarrConnectApp',['ui.router','ngResource','sonarrConnectApp.controllers','sonarrConnectApp.services','sonarrConnectApp.models', 'lumx']);
+angular.module('sonarrConnectApp',['ui.router','ngResource','sonarrConnectApp.controllers','sonarrConnectApp.services','sonarrConnectApp.models', 'lumx', 'foundation']);
 
 angular.module('sonarrConnectApp').config(function($stateProvider,$httpProvider){
   $stateProvider.state('series',{
