@@ -84,4 +84,7 @@ select {
   width: 96%!important;
   margin-left: 2%!important;
   left: 0!important;
+  opacity: 1!important;
+  overflow-y: scroll;
+  bottom: 0%;
 }

@@ -184,6 +184,13 @@ angular.module('sonarrConnectApp.services',['ngResource'])
     {'query': { method: 'GET', isArray: true }}
   );
 })
+.factory('ManualSearchEpisode',function($resource, Config){
+  return $resource(
+    Config.url + 'api/release?sort_by=releaseWeight&order=asc&apikey=' + Config.apiKey,
+    { episodeId: '@episodeId' }, // Query parameters
+    {'query': { method: 'GET', isArray: true }}
+  );
+})
 .factory('Calendar',function($resource, UtilService, Config){
   var today = UtilService.formatDate(new Date());
   var endDate = UtilService.formatDate(new Date(), 7);
@@ -309,7 +316,7 @@ angular.module('sonarrConnectApp.services',['ngResource'])
 
   //filter later
   this.laterFilter = function (episode) { 
-    if(new Date(episode.airDateUtc).valueOf() >= dayAfterTomorrow.valueOf()){
+    if(new Date(episode.episode.airDateUtc).valueOf() >= dayAfterTomorrow.valueOf()){
       return true;
     } else {
       return false;

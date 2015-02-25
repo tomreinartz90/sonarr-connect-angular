@@ -1,10 +1,12 @@
 
-<div class="episode" ng-controller="episodeController">
-
-  <li class="list-row list-row--has-primary list-row--has-secondary" ng-click="showDownloadButtons = !showDownloadButtons" lx-ripple="blue-500">
-    <div class="list-primary-tile">
-      <img class="list-primary-tile__img" ng-src="{{episode.posterImage}}">
-    </div>
+<div class="episode" ng-controller="episodeController as EC">
+  <!--list-row--has-primary-->
+  <li class="list-row  list-row--has-secondary" ng-click="showDownloadButtons = !showDownloadButtons" lx-ripple="blue-500">
+    <!--
+<div class="list-primary-tile">
+<img class="list-primary-tile__img" ng-src="{{episode.posterImage}}">
+</div>
+-->
 
     <div class="list-content-tile list-content-tile--two-lines">
       <strong>{{::episode.showTitle}}: {{::episode.number}}</strong>
@@ -19,30 +21,43 @@
     <a class="btn btn--m btn--blue btn--raised" ng-click="autoMaticDownload(episode.episodeId)" lx-ripple>Search episode</a>
     <a class="btn btn--m btn--blue btn--raised" ng-click="manualDownload(episode.episodeId)" lx-ripple>Manual download</a>
   </div>
-</div>
 
 
 
-<lx-dialog class="dialog dialog--l" id="{{::episode.episodeId}}">
-  <div class="dialog__header">
-    <div class="toolbar bgc-light-blue-500 pl++">
-      <span class="toolbar__label tc-white fs-title">
-         Download {{::episode.showTitle}}: {{::episode.number}}
-      </span>
 
-      <div class="toolbar__right">
-        <button class="btn btn--l btn--white btn--icon" lx-ripple lx-dialog-close>
-          <i class="mdi mdi-close"></i>
-        </button>
+  <div class="dialog dialog--l" id="{{::episode.episodeId}}" ng-show="showDownloads">
+    <div class="dialog__header">
+      <div class="toolbar bgc-light-blue-500 pl++">
+        <span class="toolbar__label tc-white fs-title">
+          Download {{::episode.showTitle}}: {{::episode.number}}
+        </span>
+
+        <div class="toolbar__right">
+          <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="showDownloads = false">
+            <i class="mdi mdi-close"></i>
+          </button>
+        </div>
       </div>
+    </div>
+
+    <div class="dialog__content">
+      <div class="clearfix small-12">
+        <div ng-repeat="download in downloads" class="list-row list-row--has-secondary">
+          <div class="list-content-tile list-content-tile--two-lines">
+            <strong>{{::download.title}}</strong>
+            <span>{{::download.quality.quality.name}} | {{download.size/1024/1024}}mb </span>
+          </div>
+
+          <div class="list-secondary-tile">
+            <i class="icon icon--s icon--blue icon--flat mdi mdi-download"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog__actions">
+      <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close ng-click="showDownloads = false">Cancel</button>
     </div>
   </div>
 
-  <div class="dialog__content">
-
-  </div>
-
-  <div class="dialog__actions">
-    <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>Cancel</button>
-  </div>
-</lx-dialog>
+</div>

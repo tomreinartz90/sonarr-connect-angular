@@ -147,8 +147,12 @@ angular.module('sonarrConnectApp.controllers',[])
 
 })
 //episode controller
-.controller('episodeController', function($scope,$stateParams, SearchEpisode, LxDialogService){
+.controller('episodeController', function($scope,$stateParams, SearchEpisode, ManualSearchEpisode, LxDialogService){
+  var ec = this;
   $scope.showDownloadButtons = false;
+  $scope.showDownloads = false;
+  $scope.downloads = [{title: 'fetching downloads'}];
+
   $scope.changeWatchedStatus = function(episodeId){
     console.log(episodeId);
   }  
@@ -160,7 +164,10 @@ angular.module('sonarrConnectApp.controllers',[])
     });
   }  
   $scope.manualDownload = function(episodeId){
-    console.log(episodeId);
-    LxDialogService.open(episodeId);
+    $scope.downloads = ManualSearchEpisode.query({episodeId: episodeId}, function(response) {
+      console.log(this);
+
+    });
+    $scope.showDownloads = true;
   }
 });
