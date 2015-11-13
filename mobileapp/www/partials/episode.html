@@ -3,7 +3,7 @@
   <!--list-row--has-primary-->
   <div class="grid-block" ng-click="showDownloadButtons = !showDownloadButtons">
 
-    <div class="list-content-tile list-content-tile--two-lines">
+    <div class="list-content-tile list-content-tile--two-lines grid-block wrap">
       <div class="small-10 grid-block wrap">
         <div class="small-12 grid-block"><h4>{{::episode.showTitle}}</h4><h6 class="subheader">: {{::episode.number}}</h6></div>
         <h6 class="small-12 grid-block subheader">{{::episode.title}} | {{episode.status}} {{::airdate}}</h6>
@@ -14,24 +14,22 @@
       </div>
       <div class="small-12" ng-show="showDownloadButtons">
         <a class="button" ng-click="autoMaticDownload(episode.episodeId)" lx-ripple>Search episode</a>
-        <a class="button" ng-click="manualDownload(episode.episodeId)" lx-ripple>Manual download</a>
+        <a class="button" zf-open="{{episode.episodeId}}" ng-click="manualDownload(episode.episodeId)" lx-ripple>Manual download</a>
       </div>
     </div>
   </div>
 
 
 
-  <div class="dialog dialog--l" id="{{::episode.episodeId}}" ng-show="showDownloads">
-    <div class="dialog__header">
+  <div zf-modal="animatedModal" id="{{::episode.episodeId}}">
+    <div class="title-bar primary ">
       <div class="toolbar bgc-light-blue-500 pl++">
-        <span class="toolbar__label tc-white fs-title">
+        <span class="center title">
           Download {{::episode.showTitle}}: {{::episode.number}}
         </span>
 
-        <div class="toolbar__right">
-          <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="showDownloads = false">
-            <i class="mdi mdi-close"></i>
-          </button>
+        <div class="right">
+          <i zf-close="{{::episode.episodeId}}" class="mdi mdi-close"></i>
         </div>
       </div>
     </div>
@@ -52,7 +50,7 @@
     </div>
 
     <div class="dialog__actions">
-      <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close ng-click="showDownloads = false">Cancel</button>
+      <button zf-close="{{::episode.episodeId}}" class="btn btn--m btn--black btn--flat" ng-click="showDownloads = false">Cancel</button>
     </div>
   </div>
 
