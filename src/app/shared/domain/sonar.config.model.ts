@@ -15,4 +15,8 @@ export class SonarrConfig {
       Object.assign(this, base);
     }
   }
+
+  getFullUrl(){
+    return this.protocol + this.url;
+  }
 }

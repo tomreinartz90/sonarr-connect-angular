@@ -1,18 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {SonarrService} from "../../shared/sonarr.service";
 
 @Component({
-  selector: 'my-about',
+  selector: 'series',
   templateUrl: './series.component.html',
-  styleUrls: ['./series.component.scss']
+  styleUrls: ['./series.component.scss'],
+
 })
 export class SeriesComponent implements OnInit {
 
-  constructor() {
+  series:Array<any> = [];
+
+  constructor(private sonarr:SonarrService, route:ActivatedRoute) {
     // Do stuff
+    route.params.subscribe(resp => {
+      console.log('params:', resp);
+    });
   }
 
   ngOnInit() {
-    console.log('Hello About');
+    this.getSeries();
+    this.sonarr.activeShow = null;
   }
+
+  get show(){
+    return this.sonarr.activeShow;
+  }
+
+  getSeries(){
+    this.sonarr.getSeries().subscribe(resp => {
+      this.series = resp;
+    })
+  }
+
+
+
 
 }

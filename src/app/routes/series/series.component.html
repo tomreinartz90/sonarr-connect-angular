@@ -1,3 +1,5 @@
-<p>
-  About Works!
-</p>
+<router-outlet ></router-outlet>
+<ul *ngIf="!show">
+  <show *ngFor="let show of series" [show]="show">
+  </show>
+</ul>
