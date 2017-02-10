@@ -1,0 +1,21 @@
+{
+  "test": [
+    "tslint",
+    "build.test",
+    "karma.run"
+  ],
+  "default": [
+    "start.deving"
+  ],
+  "build.dev": [
+    "clean.once",
+    "move.locales",
+    "move.package.json",
+    "build.assets.dev",
+    "build.assets.lib",
+    "build.html_css",
+    "build.js.dev",
+    "build.index.dev"
+  ]
+}
+

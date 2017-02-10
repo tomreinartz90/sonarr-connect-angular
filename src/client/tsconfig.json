@@ -2,26 +2,33 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "declaration": false,
+    "declaration": true,
     "removeComments": true,
     "noLib": false,
+    "lib": [
+      "es2016",
+      "dom"
+    ],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es2015"],
     "sourceMap": true,
     "pretty": true,
-    "allowUnreachableCode": false,
+    "allowUnreachableCode": true,
     "allowUnusedLabels": false,
     "noImplicitAny": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": false,
     "noImplicitUseStrict": false,
+    "suppressImplicitAnyIndexErrors": true,
     "noFallthroughCasesInSwitch": true,
     "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules"
+      "../../node_modules/@types",
+      "../../node_modules"
     ],
     "types": [
-      "node"
+      "node",
+      "jasmine",
+      "protractor",
+      "systemjs"
     ]
   },
   "exclude": [
@@ -29,5 +36,5 @@
     "dist",
     "src"
   ],
-  "compileOnSave": false
+  "compileOnSave": true
 }

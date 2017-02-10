@@ -1,0 +1,18 @@
+<div class="row main">
+  <header class="small-12">
+    <nav>
+      <ul class="menu expanded">
+        <li><a routerLinkActive="active" [routerLink]="['/']">Calendar</a></li>
+        <li><a routerLinkActive="active" [routerLink]="['/series']">Series</a></li>
+        <li><a routerLinkActive="active" [routerLink]="['/config']">Config</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="column small-12">
+    <router-outlet></router-outlet>
+  </main>
+  <footer class="column small-12">
+    <a [href]="url">Powered by Killer8 and Tomreinartz90</a>
+  </footer>
+</div>

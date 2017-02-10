@@ -1,0 +1,5 @@
+<router-outlet ></router-outlet>
+<div *ngIf="!show">
+  <show *ngFor="let show of series" [show]="show">
+  </show>
+</div>

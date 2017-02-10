@@ -24,7 +24,7 @@ This seed repo serves as an Angular 2 starter for anyone looking to get up and r
 
 ### Quick start
 
-> Clone/Download the repo then edit `app.ts` inside [`/src/app/app.component.ts`](/src/app/app.component.ts)
+> Clone/Download the repo then edit `app.ts` inside [`/src/app/app.component.ts`](/src/client/app/app.component.ts)
 
 ```bash
 # clone our repo

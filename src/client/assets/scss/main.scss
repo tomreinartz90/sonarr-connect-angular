@@ -1,0 +1,164 @@
+// styles in src/style directory are applied to the whole page
+@import "settings";
+
+@include foundation-everything(true);
+@import "./app.component";
+
+main {
+  margin-top: 3rem;
+}
+
+body {
+  background-color: $dark-gray;
+  color: $medium-gray;
+}
+
+
+.episode {
+  padding: 1rem 0;
+  border-bottom: .125rem solid $sonarr-blue;
+
+  .monitored-indicator {
+    .material-icons {
+      font-size: 2.5rem;
+      color: $dark-gray;
+      line-height: 1;
+    }
+  }
+}
+
+show {
+  display: block;
+  margin: .5rem 0;
+  padding-bottom: .5rem;
+  //background-color: $medium-gray;
+  //color: $dark-gray;
+  cursor: pointer;
+  border-bottom: .125rem solid $sonarr-blue;
+
+  &:hover {
+    background-color: darken($dark-gray, 20%)
+  }
+
+  .small-8 {
+    padding: 0 .5rem 0 1rem;
+  }
+
+  .series-title {
+    font-size: 1.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 2rem;
+    font-weight: bold;
+    color: $white;
+  }
+
+  .monitored-indicator {
+    .material-icons {
+      font-size: 2.5rem;
+      color: $white;
+      line-height: 1;
+    }
+  }
+}
+
+series-details {
+  .banner {
+    //position: absolute;
+    margin-bottom: -2rem;
+    margin-top: -1rem;
+  }
+
+  .network {
+    font-weight: bold;
+  }
+
+  .show-poster {
+    padding: 0 .5rem 1rem .625rem;
+    img {
+      box-shadow: 3px 3px 3px $dark-gray;
+    }
+  }
+
+  .show-info {
+    h2 {
+      color: $white;
+      text-shadow: 3px 3px 6px $dark-gray;
+      font-weight: bold;
+    }
+    .label {
+      margin: 0 .5rem;
+    }
+  }
+
+  .summary {
+    margin-top: 1rem;
+    border-top: thin solid $medium-gray;
+    padding: 1rem 0.625rem 0 0.625rem;
+  }
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.2rem; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  margin: 0 .5rem;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+.accordion-title {
+  padding: .65rem 1rem;
+  h3 {
+    margin: 0;
+  }
+
+  .label {
+    font-size: 0.9rem;
+    line-height: 1;
+    float: right;
+    margin-right: 1.2rem;
+  }
+}
+
+.accordion-content {
+  padding-top: 0;
+}
+
+.episode {
+  .series-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+}
+
+.label {
+  border-radius: .25rem;
+  font-size: bold;
+  &.success {
+    background-color: $success-color;
+    color: $white;
+  }
+}
+
+.accordion {
+  margin: 0 -.65rem
+}
