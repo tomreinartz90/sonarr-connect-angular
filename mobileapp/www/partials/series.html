@@ -1,6 +1,0 @@
-
-<input model="search" filter-width="100%" placeholder="Search series" type="text" />
-
-<div class="clearfix small-12">
-  <div classs="small-12" ng-repeat="serie in series |filter : {cleanTitle : search} |orderBy : 'cleanTitle'" data-ng-include data-src="'partials/serie.html'"></div>
-</div>
