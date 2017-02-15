@@ -1,4 +1,4 @@
-<div class="serie-general row" *ngIf="show" [routerLink]="['/series', show.id]" (click)="selectShow(show)">
+<div class="serie-general row is-collapse-child" *ngIf="show" [routerLink]="['/series', show.id]" (click)="selectShow(show)">
   <div class="small-2">
     <img id="poster" [src]="getPoster()">
   </div>

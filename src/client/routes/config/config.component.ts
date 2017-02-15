@@ -1,20 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {StorageService, SonarrConfig} from '../../shared/index';
+import { Component, OnInit } from '@angular/core';
+import { StorageService, SonarrConfig } from '../../shared/index';
+import { routerTransition } from "../../shared/animation.util";
 
-@Component({
+@Component( {
   selector: 'my-about',
   templateUrl: 'config.component.html',
-})
+  animations: [ routerTransition() ],
+  host: { '[@flyInOut]': '' }
+} )
 export class ConfigComponent implements OnInit {
 
   config: SonarrConfig;
 
-  constructor(private storage: StorageService) {
+  constructor( private storage: StorageService ) {
     // Do stuff
   }
 
   ngOnInit() {
-    console.log('Hello config');
+    console.log( 'Hello config' );
     this.getConfig();
   }
 
@@ -23,10 +26,10 @@ export class ConfigComponent implements OnInit {
   }
 
   setConfig() {
-    this.storage.setSonarrConfig(this.config);
+    this.storage.setSonarrConfig( this.config );
   }
 
-  testConfig(){
+  testConfig() {
 
   }
 

@@ -1,4 +1,4 @@
-import {SonarrConfig} from "./domain/sonar.config.model";
+import { SonarrConfig } from "./domain/sonar.config.model";
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -9,19 +9,19 @@ export class StorageService {
     this.storage = localStorage;
   }
 
-  private setItem(key: string, value: any) {
-    return this.storage.setItem(key, JSON.stringify(value));
+  setItem( key: string, value: any ) {
+    return this.storage.setItem( key, JSON.stringify( value ) );
   }
 
-  private getItem(key: string) {
-    return JSON.parse(this.storage.getItem(key));
+  getItem( key: string ) {
+    return JSON.parse( this.storage.getItem( key ) );
   }
 
   getSonarrConfig() {
-    return new SonarrConfig(this.getItem('config'));
+    return new SonarrConfig( this.getItem( 'config' ) );
   }
 
-  setSonarrConfig(config: SonarrConfig) {
-    return this.setItem('config', config);
+  setSonarrConfig( config: SonarrConfig ) {
+    return this.setItem( 'config', config );
   }
 }
