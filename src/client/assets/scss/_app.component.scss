@@ -20,6 +20,7 @@ header {
     padding: 1rem;
     color: $white;
     text-align: center;
+    display: block;
     &.active,
     &:hover {
       background-color: $sonarr-blue;

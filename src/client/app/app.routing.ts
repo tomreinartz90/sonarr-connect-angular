@@ -7,7 +7,8 @@ import {ConfigComponent} from '../routes/config/config.component';
 import {SeriesDetailsComponent} from "../routes/series/seriesdetails/series-details.component";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', redirectTo: 'home', pathMatch:'full'},
+  {path: 'home', component: HomeComponent},
   {
     path: 'series', component: SeriesComponent,
     children: [{
