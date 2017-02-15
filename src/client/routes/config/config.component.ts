@@ -6,7 +6,7 @@ import { routerTransition } from "../../shared/animation.util";
   selector: 'my-about',
   templateUrl: 'config.component.html',
   animations: [ routerTransition() ],
-  host: { '[@flyInOut]': '' }
+  host: { '[@fadeInOut]': '' }
 } )
 export class ConfigComponent implements OnInit {
 

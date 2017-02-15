@@ -13,6 +13,7 @@ import {EpisodeComponent} from "../components/episode/episode.component";
 import {SeriesDetailsComponent} from "../routes/series/seriesdetails/series-details.component";
 import {Showomponent} from "../components/show/show.component";
 import {TimeAgoPipe} from "../pipes/time-ago.pipe";
+import {CalendarComponent} from "../routes/calendar/calendar.component";
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import {TimeAgoPipe} from "../pipes/time-ago.pipe";
     ConfigComponent,
     SeriesDetailsComponent,
     EpisodeComponent,
+    CalendarComponent,
     TimeAgoPipe,
     Showomponent
   ],

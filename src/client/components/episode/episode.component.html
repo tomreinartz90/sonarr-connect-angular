@@ -1,6 +1,6 @@
 <div class="row episode">
   <div class="small-10 columns episode-info">
-    <div class="series-title">{{episode?.series?.title}}</div>
+    <a class="series-title" *ngIf="episode?.series?.title" [routerLink]="['/series', episode.seriesId]">{{episode?.series?.title}}</a>
     <div class="episode-title">
       <span class="episodenum">{{getEpisodeNumber()}}</span>
       <span class="episodename">{{episode?.title}}</span>

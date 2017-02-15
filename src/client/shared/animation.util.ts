@@ -4,7 +4,7 @@
 import { trigger, state, animate, style, transition, keyframes, AnimationEntryMetadata } from '@angular/core';
 
 export function routerTransition(): AnimationEntryMetadata {
-  return flyInOut();
+  return fadeInOut();
 }
 
 export function serieDetailAnimation() {

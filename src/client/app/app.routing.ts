@@ -5,9 +5,11 @@ import {HomeComponent} from '../routes/home/home.component';
 import {SeriesComponent} from '../routes/series/series.component';
 import {ConfigComponent} from '../routes/config/config.component';
 import {SeriesDetailsComponent} from "../routes/series/seriesdetails/series-details.component";
+import {CalendarComponent} from "../routes/calendar/calendar.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch:'full'},
+  {path: 'calendar', component: CalendarComponent},
   {path: 'home', component: HomeComponent},
   {
     path: 'series', component: SeriesComponent,

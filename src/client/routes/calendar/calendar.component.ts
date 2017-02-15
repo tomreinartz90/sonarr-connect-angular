@@ -3,12 +3,12 @@ import { SonarrService } from "../../shared/sonarr.service";
 import { routerTransition } from "../../shared/animation.util";
 
 @Component( {
-  selector: 'my-home',
-  templateUrl: 'home.component.html',
+  selector: 'my-calendar',
+  templateUrl: 'calendar.component.html',
   animations: [ routerTransition() ],
   host: { '[@fadeInOut]': '' }
 } )
-export class HomeComponent implements OnInit {
+export class CalendarComponent implements OnInit {
 
   wanted: any;
   calendar: any;
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     console.log( 'Hello Home' );
-    this.getWanted();
+    // this.getWanted();
     this.getCalendar();
   }
 

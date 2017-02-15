@@ -5,33 +5,37 @@
 @import "./app.component";
 
 main {
-  margin-top: 3rem;
+  margin-top: 4rem;
 }
 
 body {
-  background-color: $white;
+  background-color: $dark-gray;
   color: $medium-gray;
+  overflow: hidden;
 }
 
 main > * {
   background-color: $dark-gray;
-  box-shadow: 10px 10px 10px $black;
   display: block;
-  max-height: 100vh;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 .65rem 1rem .65rem;
 
+  max-height: calc(100vh - 4rem);
   &:nth-child(2) {
     z-index: 100;
-    position: absolute;
-    width: 100%;
+    //position: absolute;
     left: 0;
+    right: 0;
+    height: 100%;
+
   }
   &:nth-child(3) {
     z-index: 80;
-    position: absolute;
+    //position: absolute;
     left: 0;
+    right: 0;
     top: 0;
-    width: 100%;
   }
 }
 
@@ -97,7 +101,6 @@ series-details {
   display: block;
   background-color: $black;
   position: absolute !important;
-  width: 100%;
   top: 0;
   .banner {
     //position: absolute;
@@ -188,7 +191,7 @@ series-details {
 
 .label {
   border-radius: .25rem;
-  font-size: bold;
+  font-weight: bold;
   &.success {
     background-color: $success-color;
     color: $white;
@@ -196,5 +199,19 @@ series-details {
 }
 
 .accordion {
-  margin: 0 -.65rem
+  margin: 0;
+}
+
+series series-details {
+  left: 0;
+  right: 0;
+  top: 4rem;
+  bottom: 0;
+  max-height: 100vh;
+  margin: 0 -.5rem;
+  //overflow-y: auto;
+  //overflow-x: hidden;
+  padding: 1rem;
+
+  width: auto!important;
 }
