@@ -9,13 +9,13 @@ main {
 }
 
 body {
-  background-color: $dark-gray;
-  color: $medium-gray;
+  background-color: $medium-gray;
+  color: $dark-gray;
   overflow: hidden;
 }
 
 main > * {
-  background-color: $dark-gray;
+  background-color: $medium-gray;
   display: block;
   overflow-y: auto;
   overflow-x: hidden;
@@ -63,16 +63,15 @@ main > * {
 }
 
 show {
+  @include card-container();
   display: block;
   margin: .5rem 0;
-  padding-bottom: .5rem;
   //background-color: $medium-gray;
   //color: $dark-gray;
   cursor: pointer;
-  border-bottom: .125rem solid $sonarr-blue;
 
   &:hover {
-    background-color: darken($dark-gray, 20%)
+    background-color: darken($white, 20%)
   }
 
   .small-8 {
@@ -85,13 +84,13 @@ show {
     text-overflow: ellipsis;
     max-height: 2rem;
     font-weight: bold;
-    color: $white;
+    //color: $white;
   }
 
   .monitored-indicator {
     .material-icons {
       font-size: 2.5rem;
-      color: $white;
+      //color: $white;
       line-height: 1;
     }
   }
@@ -182,6 +181,7 @@ series-details {
 }
 
 .episode {
+  @include card-container();
   .series-title {
     font-weight: bold;
     font-size: 1.2rem;
@@ -213,5 +213,5 @@ series series-details {
   //overflow-x: hidden;
   padding: 1rem;
 
-  width: auto!important;
+  width: auto !important;
 }
