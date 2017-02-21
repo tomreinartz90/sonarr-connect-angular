@@ -5,7 +5,7 @@
 @import "./app.component";
 
 main {
-  margin-top: 4rem;
+  //margin-top: 4rem;
 }
 
 body {
@@ -19,9 +19,11 @@ main > * {
   display: block;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 0 .65rem 1rem .65rem;
 
   max-height: calc(100vh - 4rem);
+  &:not(:empty) {
+    padding: .5rem;
+  }
   &:nth-child(2) {
     z-index: 100;
     //position: absolute;
@@ -182,6 +184,7 @@ series-details {
 
 .episode {
   @include card-container();
+  padding-left: .5rem;
   .series-title {
     font-weight: bold;
     font-size: 1.2rem;
@@ -212,6 +215,18 @@ series series-details {
   //overflow-y: auto;
   //overflow-x: hidden;
   padding: 1rem;
-
   width: auto !important;
 }
+
+.route-title {
+  background-color: darken($sonarr-blue, 10%);
+  color: $white;
+  padding: 3rem 1rem 1rem;
+  margin: -.5rem;
+  margin-bottom: 1rem;
+  h3 {
+    font-size: 1.4rem;
+  }
+}
+
+

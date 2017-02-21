@@ -1,14 +1,8 @@
-<!--<ul class="accordion">
-  <li class="accordion-item" #want>
-    <a class="accordion-title" (click)="want.active = !want.active"><h3>Wanted <span class="label">{{wanted?.totalRecords || '?'}}</span></h3></a>
-    <div class="accordion-content" data-tab-content [style.display]="want.active ? 'block' : 'none'">
-      <episode *ngFor="let item of wanted?.records" [episode]="item"></episode>
-    </div>
-  </li>
-  <li class="accordion-item" #cal>
-    <a class="accordion-title" (click)="cal.active = !cal.active"><h3>Calendar</h3></a>
-    <div class="accordion-content" *ngIf="calendar && calendar.length" data-tab-content [style.display]="!cal.active ? 'block' : 'none'">
-    </div>
-  </li>
-</ul>-->
-<episode *ngFor="let item of calendar" [episode]="item"></episode>
+<div class="route-title">
+  <h3>Upcoming Episodes</h3>
+</div>
+
+<div *ngFor="let date of calendar">
+  <h4>{{date.date | date}}</h4>
+  <episode *ngFor="let item of date.episodes" [episode]="item"></episode>
+</div>

@@ -9,6 +9,7 @@ import { SonarrUtil } from "./sonarr.util";
 import { Observable } from "rxjs/Rx";
 import { SonarrSeriesModel } from "./domain/sonarr-series.model";
 import { SonarrImageModel } from "./domain/sonarr-image.model";
+import { SonarrSeriesEpisode } from "./domain/sonarr-series-episode.model";
 
 
 @Injectable()
@@ -41,7 +42,7 @@ export class SonarrService {
     return { url: url, params: params, apiKey: apiKey }
   }
 
-  getCalendar(): Observable<Array<SonarrSeriesModel>> {
+  getCalendar(): Observable<Array<SonarrSeriesEpisode>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'start', this.util.formatDate( new Date(), null ) );
     params.set( 'end', this.util.formatDate( new Date(), this.storage.getSonarrConfig().daysInCalendar ) );
@@ -52,7 +53,7 @@ export class SonarrService {
       }) ).startWith( this.storage.getItem( 'calendar' ) );
   }
 
-  getWanted( page: number = 0 ): Observable<Array<SonarrSeriesModel>> {
+  getWanted( page: number = 0 ): Observable<Array<SonarrSeriesEpisode>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
     params.set( 'page', String( page + 1 ) );
@@ -74,7 +75,7 @@ export class SonarrService {
       }) ).startWith( this.storage.getItem( 'series' ) );
   }
 
-  getEpisodesForSeries( seriesId: number ): Observable<Array<SonarrSeriesModel>> {
+  getEpisodesForSeries( seriesId: number ): Observable<Array<SonarrSeriesEpisode>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'seriesId', String( seriesId ) );
     // http://192.168.1.100:8989/api/episode?seriesId=10&apikey=aa9838e7d4444602849061ca1a6bffa7

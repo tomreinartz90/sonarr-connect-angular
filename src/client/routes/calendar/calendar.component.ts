@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SonarrService } from "../../shared/sonarr.service";
 import { routerTransition } from "../../shared/animation.util";
-import { SonarrSeriesEpisode } from "shared/domain/sonarr-series-episode.model";
+import { SonarrSeriesEpisode } from "../../shared/domain/sonarr-series-episode.model";
 
 @Component( {
   selector: 'my-calendar',
@@ -12,7 +12,7 @@ import { SonarrSeriesEpisode } from "shared/domain/sonarr-series-episode.model";
 export class CalendarComponent implements OnInit {
 
   wanted: any;
-  calendar: any;
+  calendar: Array<{date: Date, episodes: Array<SonarrSeriesEpisode>}>;
 
   constructor( private sonarr: SonarrService ) {
     // Do stuff
@@ -24,29 +24,28 @@ export class CalendarComponent implements OnInit {
     this.getCalendar();
   }
 
-  getWanted() {
-    this.sonarr.getWanted().subscribe( resp => {
-      console.log( resp );
-      this.wanted = resp;
-    } )
-  }
-
   getCalendar() {
-    let calendarDates: Array<Date>                                                 = [];
-    let groupedEpisodes: Array<{date: Date, episodes: Array<SonarrSeriesEpisode>}> = [];
 
     this.sonarr.getCalendar().subscribe( ( resp: Array<SonarrSeriesEpisode> ) => {
+        let calendarDates: Array<string>                                               = [];
+        let groupedEpisodes: Array<{date: Date, episodes: Array<SonarrSeriesEpisode>}> = [];
         //create list of dates where episodes are aired
         resp.forEach( episode => {
-          calendarDates.push( new Date( episode.airDateUtc ) )
+          if ( calendarDates.indexOf( episode.airDate ) == -1 ) {
+            calendarDates.push( episode.airDate )
+          }
         } );
-        calendarDates.filter( this.onlyUnique );
+
+
         calendarDates.forEach( date => {
           groupedEpisodes.push( {
-            date: date,
-            episodes: resp.filter( episode => new Date( episode.airDateUtc ).toDateString() === date.toDateString() )
+            date: new Date( date ),
+            episodes: resp.filter( episode => episode.airDate == date )
           } );
-        } )
+        } );
+        
+        this.calendar = groupedEpisodes;
+        console.log( calendarDates, groupedEpisodes );
 
       }
     )
