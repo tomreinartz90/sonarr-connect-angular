@@ -19,34 +19,32 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log( 'Hello Home' );
-    // this.getWanted();
     this.getCalendar();
   }
 
   getCalendar() {
 
     this.sonarr.getCalendar().subscribe( ( resp: Array<SonarrSeriesEpisode> ) => {
-        let calendarDates: Array<string>                                               = [];
-        let groupedEpisodes: Array<{date: Date, episodes: Array<SonarrSeriesEpisode>}> = [];
-        //create list of dates where episodes are aired
-        resp.forEach( episode => {
-          if ( calendarDates.indexOf( episode.airDate ) == -1 ) {
-            calendarDates.push( episode.airDate )
-          }
-        } );
-
-
-        calendarDates.forEach( date => {
-          groupedEpisodes.push( {
-            date: new Date( date ),
-            episodes: resp.filter( episode => episode.airDate == date )
+        if ( resp ) {
+          let calendarDates: Array<string>                                               = [];
+          let groupedEpisodes: Array<{date: Date, episodes: Array<SonarrSeriesEpisode>}> = [];
+          //create list of dates where episodes are aired
+          resp.forEach( episode => {
+            if ( calendarDates.indexOf( episode.airDate ) == -1 ) {
+              calendarDates.push( episode.airDate )
+            }
           } );
-        } );
-        
-        this.calendar = groupedEpisodes;
-        console.log( calendarDates, groupedEpisodes );
 
+
+          calendarDates.forEach( date => {
+            groupedEpisodes.push( {
+              date: new Date( date ),
+              episodes: resp.filter( episode => episode.airDate == date )
+            } );
+          } );
+
+          this.calendar = groupedEpisodes;
+        }
       }
     )
   }

@@ -21,7 +21,7 @@ header {
     color: $white;
     text-align: center;
     display: block;
-    width: 23%;
+    width: 25%;
     > *,
     & {
       transition: all 200ms ease-in-out;
@@ -38,12 +38,12 @@ header {
     }
 
     &.active {
-      width: 31%;
+      //width: 31%;
       span {
       }
       i {
-        font-size: 2rem;
-        line-height: 1;
+        //font-size: 2rem;
+        //line-height: 1;
       }
     }
     &.active,

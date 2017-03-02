@@ -9,12 +9,12 @@ if ( Config.env === 'prod' ) {
   enableProdMode();
 }
 
-export function main():any {
-  return platformBrowserDynamic().bootstrapModule(AppModule);
+export function main(): any {
+  return platformBrowserDynamic().bootstrapModule( AppModule );
 }
-
-if (document.readyState === 'complete') {
-  main();
-} else {
-  document.addEventListener('DOMContentLoaded', main);
-}
+//
+//if ( document.readyState === 'complete' ) {
+//} else {
+//  document.addEventListener( 'DOMContentLoaded', main );
+//}
+main();

@@ -12,7 +12,7 @@
         <span class="date">{{isAirdateBeforeNow() ? 'Aired' : 'Airs'}} {{episode.airDateUtc | timeAgo}}</span>
       </div>
     </div>
-    <div class="small-2 columns monitored-indicator">
+    <div class="small-2 columns monitored-indicator" (click)="toggleEpisodeMonitored()">
       <i class="material-icons" *ngIf="episode.monitored">bookmark</i>
       <i class="material-icons" *ngIf="!episode.monitored">bookmark_border</i>
     </div>

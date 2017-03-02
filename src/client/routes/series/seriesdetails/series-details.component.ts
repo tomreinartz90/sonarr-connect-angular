@@ -28,9 +28,10 @@ export class SeriesDetailsComponent implements OnInit {
   // Do stuff
 
   ngOnInit() {
-    this.sonarr.getSeries().subscribe( resp => {
+    this.sonarr.getSeries().subscribe( ( resp: Array<SonarrSeriesModel> ) => {
       this.sonarr.activeShow = resp.find( show => show.id == this.activeShow );
       this.getEpisodes();
+      this.activeSeason = this.sonarr.activeShow.seasons[ this.sonarr.activeShow.seasons.length - 1 ].seasonNumber;
     } );
     if ( this.show ) {
       this.getEpisodes();

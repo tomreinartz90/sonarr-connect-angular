@@ -56,6 +56,7 @@ main > * {
   border-bottom: .125rem solid $sonarr-blue;
 
   .monitored-indicator {
+    cursor: pointer;
     .material-icons {
       font-size: 2.5rem;
       color: $dark-gray;
@@ -87,9 +88,12 @@ show {
     max-height: 2rem;
     font-weight: bold;
     //color: $white;
+    margin-top: 1rem;
   }
 
   .monitored-indicator {
+    padding: 1rem 0;
+    text-align: center;
     .material-icons {
       font-size: 2.5rem;
       //color: $white;
@@ -103,6 +107,8 @@ series-details {
   background-color: $black;
   position: absolute !important;
   top: 0;
+  overflow: auto;
+  color: $white;
   .banner {
     //position: absolute;
     margin-bottom: -2rem;
@@ -135,6 +141,23 @@ series-details {
     margin-top: 1rem;
     border-top: thin solid $medium-gray;
     padding: 1rem 0.625rem 0 0.625rem;
+  }
+
+  .season-select {
+    background-color: $dark-gray;
+    border: thin solid $light-gray;
+    margin-bottom: .5rem;
+    li {
+      &:hover {
+        background-color: $medium-gray;
+      }
+      a h3 {
+        text-align: center;
+        width: 100%;
+        line-height: 2rem;
+        margin-bottom: 0;
+      }
+    }
   }
 }
 
@@ -185,6 +208,7 @@ series-details {
 .episode {
   @include card-container();
   padding-left: .5rem;
+  margin: .2rem 0;
   .series-title {
     font-weight: bold;
     font-size: 1.2rem;
@@ -229,4 +253,22 @@ series series-details {
   }
 }
 
+my-calendar {
+  h4 {
+    background-color: darken($medium-gray, 10%);
+    color: $white;
+    font-size: $h5-font-size;
+    font-weight: bold;
+    margin: 1.5rem -.5rem -.5rem;
+    padding: 1rem;
+  }
+}
 
+my-config {
+  .card {
+    padding: 2rem 1rem;
+  }
+  .test-status {
+    margin: .5rem 1rem;
+  }
+}

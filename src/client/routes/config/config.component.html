@@ -35,9 +35,15 @@
       <input type="number" min="0" [(ngModel)]="config.backgroundInterval">
     </div>
 
+    <div class="test-status" *ngIf="testStatus">
+      <span *ngIf="testStatus.success" class="label success">Connected</span>
+      <span *ngIf="testStatus.error" class="label warning">Could not Connect</span>
+      to Sonarr with version {{testStatus?.info?.version}}
+    </div>
+
     <div class="column small-12">
-      <div class="button" (click)="testConfig()">Test</div>
       <div class="button success float-right" (click)="setConfig()">Save</div>
+      <div class="button float-right" (click)="testConfig()">Test</div>
     </div>
   </div>
 </div>
