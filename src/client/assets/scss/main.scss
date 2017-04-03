@@ -91,6 +91,13 @@ show {
     margin-top: 1rem;
   }
 
+  .serie-general img {
+    min-height: 6rem;
+    max-height: 8rem;
+    float: right;
+    background-color: $dark-gray;
+  }
+
   .monitored-indicator {
     padding: 1rem 0;
     text-align: center;
@@ -255,12 +262,13 @@ series series-details {
 
 my-calendar {
   h4 {
-    background-color: darken($medium-gray, 10%);
+    background: darken($medium-gray, 10%);
+    //background: linear-gradient(to bottom, darken($medium-gray, 10%) 0%, $medium-gray);
     color: $white;
     font-size: $h5-font-size;
     font-weight: bold;
-    margin: 1.5rem -.5rem -.5rem;
-    padding: 1rem;
+    margin: 1.5rem -.5rem -1.5rem;
+    padding: 2rem 1rem;
   }
 }
 

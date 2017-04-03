@@ -38,7 +38,7 @@ export class ConfigComponent implements OnInit {
       console.log( resp );
       this.testStatus = { success: true, info: resp };
     }, err => {
-      this.testStatus = { errro: true };
+      this.testStatus = { error: true };
     } )
 
   }

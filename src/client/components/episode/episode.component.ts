@@ -41,7 +41,7 @@ export class EpisodeComponent implements OnInit {
     if ( !this.loading ) {
       this.loading           = true;
       this.episode.monitored = !this.episode.monitored;
-      return this.sonarr.setEpisode( this.episode ).subscribe( resp => {
+      this.sonarr.setEpisode( this.episode ).subscribe( resp => {
         this.loading = false;
       }, () => {
         this.episode.monitored = !this.episode.monitored;
