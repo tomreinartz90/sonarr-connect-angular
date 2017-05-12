@@ -1,14 +1,15 @@
 /**
  * Created by taren on 20-1-2017.
  */
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Http, URLSearchParams } from '@angular/http';
-import { StorageService } from './storage.service';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Http, URLSearchParams } from "@angular/http";
+import { StorageService } from "./storage.service";
 import { SonarrUtil } from "./sonarr.util";
-import { Observable, Subject } from "rxjs/Rx";
 import { SonarrSeriesModel } from "./domain/sonarr-series.model";
 import { SonarrImageModel } from "./domain/sonarr-image.model";
+import { SonarrSeriesEpisode } from "./domain/sonarr-series-episode.model";
+import { Observable } from "rxjs/Rx";
 
 
 @Injectable()
@@ -27,7 +28,7 @@ export class SonarrService {
     } else {
       //goto config page when url or api key is not found
       this.router.navigate( [ '/config' ] );
-      return Observable.empty();
+      return Observable.never();
     }
   }
 
@@ -41,7 +42,7 @@ export class SonarrService {
     return { url: url, params: params, apiKey: apiKey }
   }
 
-  getCalendar() {
+  getCalendar(): Observable<Array<SonarrSeriesEpisode>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'start', this.util.formatDate( new Date(), null ) );
     params.set( 'end', this.util.formatDate( new Date(), this.storage.getSonarrConfig().daysInCalendar ) );
@@ -49,10 +50,10 @@ export class SonarrService {
       .debounceTime( 1000 )
       .do( (resp => {
         this.storage.setItem( 'calendar', resp );
-      }) ).startWith( this.storage.getItem( 'calendar' ) ).filter( obj => obj != null );
+      }) ).startWith( this.storage.getItem( 'calendar' ) );
   }
 
-  getWanted( page: number = 0 ) {
+  getWanted( page: number = 0 ): Observable<Array<SonarrSeriesEpisode>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
     params.set( 'page', String( page + 1 ) );
@@ -61,7 +62,7 @@ export class SonarrService {
       .debounceTime( 1000 )
       .do( (resp => {
         this.storage.setItem( 'missing', resp );
-      }) ).startWith( this.storage.getItem( 'missing' ) ).filter( obj => obj != null )
+      }) ).startWith( this.storage.getItem( 'missing' ) )
   }
 
   getSeries(): Observable<Array<SonarrSeriesModel>> {
@@ -74,7 +75,7 @@ export class SonarrService {
       }) ).startWith( this.storage.getItem( 'series' ) );
   }
 
-  getEpisodesForSeries( seriesId: number ) {
+  getEpisodesForSeries( seriesId: number ): Observable<Array<SonarrSeriesEpisode>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'seriesId', String( seriesId ) );
     // http://192.168.1.100:8989/api/episode?seriesId=10&apikey=aa9838e7d4444602849061ca1a6bffa7
@@ -82,7 +83,7 @@ export class SonarrService {
 
   }
 
-  getHistory( page: number = 0 ) {
+  getHistory( page: number = 0 ): Observable<Array<any>> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().historyItems ) );
     params.set( 'page', String( page + 1 ) );
@@ -90,18 +91,35 @@ export class SonarrService {
       .debounceTime( 1000 )
       .do( (resp => {
         this.storage.setItem( 'history', resp );
-      }) ).startWith( this.storage.getItem( 'history' ) ).filter( obj => obj != null )
+      }) ).startWith( this.storage.getItem( 'history' ) );
   }
 
   getSeriesUrl( series: SonarrSeriesModel, type: 'banner' | 'poster' ) {
     let image: SonarrImageModel = series.images.find( ( image: SonarrImageModel ) => image.coverType == type );
     if ( image ) {
       if ( image.url.indexOf( 'MediaCover' ) ) {
-        return this.getSonarrUrlAndParams().url + image.url + "&apikey=" + this.getSonarrUrlAndParams().apiKey;
+        let start = image.url.indexOf( 'MediaCover' );
+        return this.getSonarrUrlAndParams().url + image.url.substring( start ) + "&apikey=" + this.getSonarrUrlAndParams().apiKey;
       } else {
         return image.url;
       }
     }
     return '';
+  }
+
+  setEpisode( episode: SonarrSeriesEpisode ) {
+    let url    = this.getSonarrUrlAndParams().url;
+    let apiKey = this.getSonarrUrlAndParams().apiKey;
+
+    if ( url && apiKey ) {
+      return this.http.put( url + "/episode/" + episode.id, JSON.stringify( episode ) ).map( resp => resp.json() );
+    } else {
+      return Observable.never();
+    }
+  }
+
+  getSystemStatus() {
+    let params = this.getSonarrUrlAndParams().params;
+    return this.get( "/system/status", params )
   }
 }

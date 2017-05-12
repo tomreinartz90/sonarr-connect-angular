@@ -22,6 +22,10 @@ export class StorageService {
   }
 
   setSonarrConfig( config: SonarrConfig ) {
+    if ( config.url ) {
+      config.url = config.url.replace( "http://", '' );
+      config.url = config.url.replace( "https://", '' );
+    }
     return this.setItem( 'config', config );
   }
 }

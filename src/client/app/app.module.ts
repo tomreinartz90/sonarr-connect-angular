@@ -1,4 +1,4 @@
-import {NgModule, ApplicationRef} from "@angular/core";
+import {NgModule} from "@angular/core";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpModule} from "@angular/http";
 import {CommonModule} from "@angular/common";
@@ -16,7 +16,7 @@ import {Showomponent} from "../components/show/show.component";
 import {TimeAgoPipe} from "../pipes/time-ago.pipe";
 import {CalendarComponent} from "../routes/calendar/calendar.component";
 
-@NgModule({
+@NgModule( {
   imports: [
     BrowserAnimationsModule,
     HttpModule,
@@ -40,10 +40,10 @@ import {CalendarComponent} from "../routes/calendar/calendar.component";
     SonarrUtil,
     SonarrService
   ],
-  bootstrap: [AppComponent]
-})
+  bootstrap: [ AppComponent ]
+} )
 export class AppModule {
-  constructor(public appRef: ApplicationRef) {
+  constructor() {
   }
 
   // hmrOnInit(store) {

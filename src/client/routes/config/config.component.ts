@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { StorageService, SonarrConfig } from '../../shared/index';
-import { fadeInOut } from "../../shared/animation.util";
+import {Component, OnInit} from "@angular/core";
+import {StorageService, SonarrConfig, SonarrService} from "../../shared/index";
+import {fadeInOut} from "../../shared/animation.util";
+import {Router} from "@angular/router";
 
 @Component( {
-  selector: 'my-about',
+  selector: 'my-config',
   templateUrl: 'config.component.html',
   animations: [ fadeInOut ],
   host: { '[@fadeInOut]': '' }
@@ -11,13 +12,13 @@ import { fadeInOut } from "../../shared/animation.util";
 export class ConfigComponent implements OnInit {
 
   config: SonarrConfig;
+  testStatus: {success?: boolean, error?: boolean, info?: any} = null;
 
-  constructor( private storage: StorageService ) {
+  constructor( private storage: StorageService, private sonarrService: SonarrService, private router: Router ) {
     // Do stuff
   }
 
   ngOnInit() {
-    console.log( 'Hello config' );
     this.getConfig();
   }
 
@@ -27,9 +28,18 @@ export class ConfigComponent implements OnInit {
 
   setConfig() {
     this.storage.setSonarrConfig( this.config );
+    this.router.navigate( [ 'series' ] );
   }
 
   testConfig() {
+    this.storage.setSonarrConfig( this.config );
+
+    this.sonarrService.getSystemStatus().subscribe( resp => {
+      console.log( resp );
+      this.testStatus = { success: true, info: resp };
+    }, err => {
+      this.testStatus = { error: true };
+    } )
 
   }
 

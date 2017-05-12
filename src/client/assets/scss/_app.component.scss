@@ -2,7 +2,7 @@
 
 my-app {
   .main {
-    margin-top: 5.5rem;
+    margin-top: 4rem;
   }
 }
 
@@ -21,13 +21,14 @@ header {
     color: $white;
     text-align: center;
     display: block;
-    width: 23%;
-     > *,
-       & {
-       transition: all 200ms ease-in-out;
-     }
+    width: 25%;
+    > *,
+    & {
+      transition: all 200ms ease-in-out;
+    }
     span {
-      display: none;
+      display: block;
+
       font-size: .8rem;
       line-height: 1;
     }
@@ -37,13 +38,12 @@ header {
     }
 
     &.active {
-      width: 31%;
+      //width: 31%;
       span {
-        display: block;
       }
       i {
-        font-size: 2rem;
-        line-height: 1;
+        //font-size: 2rem;
+        //line-height: 1;
       }
     }
     &.active,

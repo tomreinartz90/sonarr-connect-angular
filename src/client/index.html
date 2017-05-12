@@ -4,24 +4,26 @@
   <base href="<%= ENV_CONFIG.basepath %>">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><%= ENV_CONFIG.applicationName %> - Maxxton - <%= ENV_CONFIG.profile %></title>
+  <title>Sonarr Connect</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet">
+  <script src="assets/module.js"></script>
+
 
   <!-- inject:css -->
   <!-- endinject -->
 </head>
 <body>
-<app></app>
+<my-app></my-app>
 
 
-<script>
+<!--<script>
   // Fixes undefined module function in SystemJS bundle
   function module() {
   }
-</script>
+</script>-->
 
 <!-- shims:js -->
 <!-- endinject -->
