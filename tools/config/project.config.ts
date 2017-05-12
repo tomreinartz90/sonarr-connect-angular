@@ -40,11 +40,11 @@ export class ProjectConfig extends SeedConfig {
     // }];
     //
     // this.addPackagesBundles(additionalPackages);
-
+    this.LANGS = null;
     /* Add to or override NPM module configurations: */
     // this.mergeObject(this.PLUGIN_CONFIGS['browser-sync'], { ghostMode: false });
-    this.POEDITOR_APIKEY     = "7c70c1f5898a4c69f0688bff77f2890f";
-    this.POEDITOR_PROJECTKEY = 74003;
+    // this.POEDITOR_APIKEY     = "7c70c1f5898a4c69f0688bff77f2890f";
+    // this.POEDITOR_PROJECTKEY = 74003;
   }
 
 }

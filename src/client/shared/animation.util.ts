@@ -1,18 +1,10 @@
 /**
  * Created by Reinartz.T on 15-2-2017.
  */
-import { trigger, state, animate, style, transition, keyframes, AnimationEntryMetadata } from '@angular/core';
+import { trigger, state, animate, style, transition, keyframes, AnimationTriggerMetadata } from '@angular/animations';
 
-export function routerTransition(): AnimationEntryMetadata {
-  return fadeInOut();
-}
 
-export function serieDetailAnimation() {
-  return slideToTop();
-}
-
-function slideToTop() {
-  return trigger( 'slideToTop', [
+export const slideToTop:AnimationTriggerMetadata = trigger( 'slideToTop', [
     state( 'void', style( { position: 'fixed', width: '100%' } ) ),
     state( '*', style( { position: 'fixed', width: '100%' } ) ),
     transition( ':enter', [  // before 2.1: transition('void => *', [
@@ -24,19 +16,14 @@ function slideToTop() {
       animate( '0.3s ease-in-out', style( { transform: 'translateY(100%)' } ) )
     ] )
   ] );
-}
 
-export function fadeInOut() {
-  return trigger( 'fadeInOut', [
+export const fadeInOut:AnimationTriggerMetadata = trigger( 'fadeInOut', [
     state( 'show', style( { opacity: 1 } ) ),
     state( 'hide', style( { opacity: 0 } ) ),
     transition( '* => *', animate( '.5s' ) )
-  ] )
-}
+  ] );
 
-
-function flyInOut() {
-  return trigger( 'flyInOut', [
+export const flyInOut:AnimationTriggerMetadata = trigger( 'flyInOut', [
     state( 'in', style( { transform: 'translateY(0)' } ) ),
     transition( 'void => *', [
       animate( 300, keyframes( [
@@ -52,5 +39,5 @@ function flyInOut() {
         style( { opacity: 0, transform: 'translateY(-100%)', offset: 1.0 } )
       ] ) )
     ] )
-  ] )
-}
+  ] );
+

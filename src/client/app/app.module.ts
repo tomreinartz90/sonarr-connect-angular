@@ -1,6 +1,7 @@
 import {NgModule, ApplicationRef} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpModule} from "@angular/http";
+import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {AppComponent} from "./app.component";
 import {HomeComponent} from "../routes/home/home.component";
@@ -17,8 +18,9 @@ import {CalendarComponent} from "../routes/calendar/calendar.component";
 
 @NgModule({
   imports: [
-    BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
+    CommonModule,
     FormsModule,
     routing
   ],

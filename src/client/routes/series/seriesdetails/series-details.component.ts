@@ -4,13 +4,13 @@ import {SonarrService} from "../../../shared/sonarr.service";
 import {SonarrSeriesModel} from "../../../shared/domain/sonarr-series.model";
 import {SonarrSeriesEpisode} from "../../../shared/domain/sonarr-series-episode.model";
 import {SonarrUtil} from "../../../shared/sonarr.util";
-import {serieDetailAnimation} from "../../../shared/animation.util";
+import {slideToTop} from "../../../shared/animation.util";
 
 @Component({
   selector: 'series-details',
   templateUrl: 'series-details.component.html',
   host: {'[@slideToTop]': ''},
-  animations: [serieDetailAnimation()]
+  animations: [slideToTop]
 })
 export class SeriesDetailsComponent implements OnInit {
 
@@ -48,6 +48,7 @@ export class SeriesDetailsComponent implements OnInit {
     if (this.show) {
       return this.util.calculateEpisodeQuoteColor(this.show.episodeFileCount, this.show.episodeCount, this.show.monitored, this.show.status)
     }
+    return null;
   }
 
   ngOnDestroy() {

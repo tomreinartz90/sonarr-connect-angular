@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SonarrService } from "../../shared/sonarr.service";
-import { routerTransition } from "../../shared/animation.util";
+import { fadeInOut } from "../../shared/animation.util";
 
 @Component( {
   selector: 'my-home',
   templateUrl: 'home.component.html',
-  animations: [ routerTransition() ],
+  animations: [ fadeInOut ],
   host: { '[@fadeInOut]': '' }
 } )
 export class HomeComponent implements OnInit {
