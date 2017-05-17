@@ -12,6 +12,9 @@ body {
   background-color: $medium-gray;
   color: $dark-gray;
   overflow: hidden;
+  width: 600px;
+  height: 800px;
+
 }
 
 main > * {
@@ -20,7 +23,7 @@ main > * {
   overflow-y: auto;
   overflow-x: hidden;
 
-  max-height: calc(100vh - 4rem);
+  max-height: calc(100vh - 2rem);
   &:not(:empty) {
     padding: .5rem;
   }
@@ -56,9 +59,10 @@ main > * {
   border-bottom: .125rem solid $sonarr-blue;
 
   .monitored-indicator {
+    padding: 0;
     cursor: pointer;
     .material-icons {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: $dark-gray;
       line-height: 1;
     }
@@ -82,27 +86,31 @@ show {
   }
 
   .series-title {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 2rem;
+    height: 1.6rem;
+    white-space: nowrap;
+    display: block;
     font-weight: bold;
     //color: $white;
-    margin-top: 1rem;
+    margin-top: .6rem;
   }
 
   .serie-general img {
-    min-height: 6rem;
-    max-height: 8rem;
+    min-height: 5rem;
+    max-height: 7rem;
     float: right;
     background-color: $dark-gray;
+    object-fit: contain;
+
   }
 
   .monitored-indicator {
     padding: 1rem 0;
     text-align: center;
     .material-icons {
-      font-size: 2.5rem;
+      font-size: 2rem;
       //color: $white;
       line-height: 1;
     }
@@ -158,11 +166,16 @@ series-details {
       &:hover {
         background-color: $medium-gray;
       }
-      a h3 {
-        text-align: center;
-        width: 100%;
-        line-height: 2rem;
-        margin-bottom: 0;
+      max-width: 3rem;
+      a {
+        padding: .25rem;
+        h3 {
+          font-size: .8rem;
+          text-align: center;
+          width: 100%;
+          line-height: 2rem;
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -180,7 +193,7 @@ series-details {
   word-wrap: normal;
   white-space: nowrap;
   direction: ltr;
-  margin: 0 .5rem;
+  //margin: 0 .5rem;
 
   /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
@@ -218,6 +231,12 @@ series-details {
   margin: .2rem 0;
   .series-title {
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2rem;
+    white-space: nowrap;
+    display: block;
+    margin-top: 1rem;
     font-size: 1.2rem;
     line-height: 1;
   }
@@ -239,7 +258,7 @@ series-details {
 series series-details {
   left: 0;
   right: 0;
-  top: 4rem;
+  top: 3rem;
   bottom: 0;
   max-height: 100vh;
   margin: 0 -.5rem;
@@ -261,14 +280,15 @@ series series-details {
 }
 
 my-calendar {
-  h4 {
-    background: darken($medium-gray, 10%);
+  > div > h4 {
+    background: lighten($medium-gray, 10%);
     //background: linear-gradient(to bottom, darken($medium-gray, 10%) 0%, $medium-gray);
-    color: $white;
-    font-size: $h5-font-size;
-    font-weight: bold;
+    color: $sonarr-blue;
+    font-size: $h4-font-size;
+    font-weight: normal;
     margin: 1.5rem -.5rem -1.5rem;
     padding: 2rem 1rem;
+    border-bottom: thin solid $sonarr-blue;
   }
 }
 

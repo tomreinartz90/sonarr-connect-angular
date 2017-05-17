@@ -2,7 +2,7 @@
 
 my-app {
   .main {
-    margin-top: 4rem;
+    margin-top: 3rem;
   }
 }
 
@@ -17,7 +17,7 @@ header {
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
 
   .row a {
-    padding: .5rem 1rem;
+    padding: .3rem .5rem;
     color: $white;
     text-align: center;
     display: block;
@@ -28,23 +28,12 @@ header {
     }
     span {
       display: block;
-
-      font-size: .8rem;
+      font-size: .7rem;
       line-height: 1;
     }
     i {
-      font-size: 1.5rem;
-      line-height: 2.5rem;
-    }
-
-    &.active {
-      //width: 31%;
-      span {
-      }
-      i {
-        //font-size: 2rem;
-        //line-height: 1;
-      }
+      font-size: 1.2rem;
+      line-height: 1.5rem;
     }
     &.active,
     &:hover {

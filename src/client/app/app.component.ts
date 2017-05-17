@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChromeService } from "../shared/chrome.service";
 
 
 @Component( {
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
 } )
 export class AppComponent {
 
-  constructor() {
+  constructor( chrome: ChromeService ) {
+    chrome.setBadge( 0 );
   }
 }

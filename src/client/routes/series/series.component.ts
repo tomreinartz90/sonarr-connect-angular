@@ -32,7 +32,6 @@ export class SeriesComponent implements OnInit {
     this.sonarr.activeShow = null;
 
     if ( this.searchBar ) {
-      console.log( this.searchBar );
       this.searchBar.nativeElement.focus();
     }
   }
@@ -42,7 +41,6 @@ export class SeriesComponent implements OnInit {
   }
 
   getFilteredSeries() {
-//    console.log( this.query );
     if ( this.series && this.query ) {
       return this.series.filter( serie => (serie.cleanTitle.indexOf( this.query.toLowerCase() ) != -1) );
     }

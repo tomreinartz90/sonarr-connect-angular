@@ -14,6 +14,7 @@ import { SeriesDetailsComponent } from "../routes/series/seriesdetails/series-de
 import { Showomponent } from "../components/show/show.component";
 import { TimeAgoPipe } from "../pipes/time-ago.pipe";
 import { CalendarComponent } from "../routes/calendar/calendar.component";
+import { ChromeService } from "../shared/chrome.service";
 
 @NgModule( {
   imports: [
@@ -36,6 +37,7 @@ import { CalendarComponent } from "../routes/calendar/calendar.component";
   providers: [
     StorageService,
     SonarrUtil,
+    ChromeService,
     SonarrService
   ],
   bootstrap: [ AppComponent ]

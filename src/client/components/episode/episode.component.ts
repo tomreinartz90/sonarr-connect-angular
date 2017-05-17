@@ -34,7 +34,7 @@ export class EpisodeComponent implements OnInit {
   }
 
   isAirdateBeforeNow() {
-    return (this.episode && new Date( this.episode.airDateUtc ).toISOString() < new Date().toISOString())
+    return (this.episode && this.episode.airDateUtc && new Date( this.episode.airDateUtc ).toISOString() < new Date().toISOString())
   }
 
   toggleEpisodeMonitored() {
