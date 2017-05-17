@@ -2,5 +2,5 @@ const DevConfig: any = {
   isProduction: true,
 };
 
-export = DevConfig;
+export default DevConfig;
 

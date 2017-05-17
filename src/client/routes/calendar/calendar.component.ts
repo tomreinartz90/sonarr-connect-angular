@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { SonarrService } from "../../shared/sonarr.service";
-import { routerTransition } from "../../shared/animation.util";
-import { SonarrSeriesEpisode } from "../../shared/domain/sonarr-series-episode.model";
+import {Component, OnInit} from "@angular/core";
+import {SonarrService} from "../../shared/sonarr.service";
+import {fadeInOut} from "../../shared/animation.util";
+import {SonarrSeriesEpisode} from "../../shared/domain/sonarr-series-episode.model";
 
 @Component( {
   selector: 'my-calendar',
   templateUrl: 'calendar.component.html',
-  animations: [ routerTransition() ],
+  animations: [ fadeInOut ],
   host: { '[@fadeInOut]': '' }
 } )
 export class CalendarComponent implements OnInit {

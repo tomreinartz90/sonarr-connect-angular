@@ -1,38 +1,37 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "declaration": false,
+    "removeComments": false,
     "noLib": false,
+    "skipLibCheck": true,
     "lib": [
       "es2016",
       "dom"
     ],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "pretty": true,
-    "allowUnreachableCode": true,
+    "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitAny": true,
-    "noImplicitReturns": false,
+    "noImplicitReturns": true,
     "noImplicitUseStrict": false,
-    "suppressImplicitAnyIndexErrors": true,
     "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "types": [
+      "jasmine"
+    ],
     "typeRoots": [
       "../../node_modules/@types",
       "../../node_modules"
-    ],
-    "types": [
-      "node",
-      "systemjs"
     ]
   },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src"
-  ],
-  "compileOnSave": true
+  "angularCompilerOptions": {
+    "skipMetadataEmit": false
+  },
+  "compileOnSave": false
 }

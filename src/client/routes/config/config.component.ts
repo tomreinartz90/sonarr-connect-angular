@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { StorageService, SonarrConfig, SonarrService } from '../../shared/index';
-import { routerTransition } from "../../shared/animation.util";
+import {Component, OnInit} from "@angular/core";
+import {StorageService, SonarrConfig, SonarrService} from "../../shared/index";
+import {fadeInOut} from "../../shared/animation.util";
+import {Router} from "@angular/router";
 
 @Component( {
   selector: 'my-config',
   templateUrl: 'config.component.html',
-  animations: [ routerTransition() ],
+  animations: [ fadeInOut ],
   host: { '[@fadeInOut]': '' }
 } )
 export class ConfigComponent implements OnInit {

@@ -28,6 +28,7 @@ export class Showomponent implements OnInit {
   getEpisodeLabelClass() {
     if (this.show)
       return this.util.calculateEpisodeQuoteColor(this.show.episodeFileCount, this.show.episodeCount, this.show.monitored, this.show.status)
+    return null;
   }
 
   selectShow(show:SonarrSeriesModel){

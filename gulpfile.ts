@@ -15,7 +15,7 @@ let firstRun = true;
 Config.gulp.task( 'clean.once', ( done: any ) => {
   if ( firstRun ) {
     firstRun = false;
-    runSequence( 'check.tools', 'clean.dev', 'clean.coverage', done );
+    runSequence( 'clean.dev', 'clean.coverage', done );
   } else {
     util.log( 'Skipping clean on rebuild' );
     done();

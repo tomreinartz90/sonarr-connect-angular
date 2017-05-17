@@ -1,5 +1,7 @@
 import { NgModule, ApplicationRef } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { HttpModule } from "@angular/http";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "./app.component";
@@ -16,10 +18,12 @@ import { TimeAgoPipe } from "../pipes/time-ago.pipe";
 import { CalendarComponent } from "../routes/calendar/calendar.component";
 import { ChromeService } from "../shared/chrome.service";
 
+
 @NgModule( {
   imports: [
-    BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
+    CommonModule,
     FormsModule,
     routing
   ],

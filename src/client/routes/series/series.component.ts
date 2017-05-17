@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { SonarrService } from "../../shared/sonarr.service";
-import { SonarrSeriesModel } from "../../shared/domain/sonarr-series.model";
-import { routerTransition, fadeInOut } from "../../shared/animation.util";
+import {Component, OnInit, ViewChild, ElementRef} from "@angular/core";
+import {ActivatedRoute} from "@angular/router";
+import {SonarrService} from "../../shared/sonarr.service";
+import {SonarrSeriesModel} from "../../shared/domain/sonarr-series.model";
+import {fadeInOut} from "../../shared/animation.util";
 
 @Component( {
   selector: 'series',
   templateUrl: 'series.component.html',
-  animations: [ fadeInOut() ],
-  host: { '[@fadeInOut]': '' }
-} )
+  animations: [fadeInOut],
+  host: {'[@fadeInOut]': ''}
+})
+
 export class SeriesComponent implements OnInit {
 
   series: Array<SonarrSeriesModel> = [];
