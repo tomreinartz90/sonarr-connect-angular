@@ -1,0 +1,22 @@
+<div class="route-title">
+  <h3>History</h3>
+</div>
+<div *ngFor="let items of history; index as index;">
+  <ng-container *ngFor="let item of items; index as index;">
+    <h5 *ngIf="index == 0">{{item.series.title}}</h5>
+    <h6 *ngIf="index == 0">{{item.episode.title}}</h6>
+
+    <div class="card">
+      <span>{{item.date | timeAgo}}</span>
+      <p>{{item.eventType}}</p>
+    </div>
+  </ng-container>
+</div>
+
+<!--<div *ngFor="let date of calendar">-->
+  <!--<h4>{{date.date | date:'fullDate'}}</h4>-->
+  <!--<episode *ngFor="let item of date.episodes" [episode]="item"></episode>-->
+<!--</div>-->
+
+
+<!--<episode *ngFor="let item of wanted?.records" [episode]="item"></episode>-->

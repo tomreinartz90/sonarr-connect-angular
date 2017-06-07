@@ -6,6 +6,7 @@ import { HttpModule } from "@angular/http";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "./app.component";
 import { HomeComponent } from "../routes/home/home.component";
+import { HistoryComponent } from "../routes/history/history.component";
 import { SeriesComponent } from "../routes/series/series.component";
 import { ConfigComponent } from "../routes/config/config.component";
 import { StorageService, SonarrService } from "../shared/index";
@@ -31,6 +32,7 @@ import { ChromeService } from "../shared/chrome.service";
     AppComponent,
     HomeComponent,
     SeriesComponent,
+    HistoryComponent,
     ConfigComponent,
     SeriesDetailsComponent,
     EpisodeComponent,
