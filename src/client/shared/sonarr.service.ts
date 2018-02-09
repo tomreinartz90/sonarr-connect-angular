@@ -18,13 +18,17 @@ export class SonarrService {
 
 
   constructor( private http: Http, private storage: StorageService, private util: SonarrUtil, private router: Router ) {
+    console.log( 'init' )
   }
 
   private get( path: string, params: URLSearchParams ): Observable<any> {
     let url    = this.getSonarrUrlAndParams().url;
     let apiKey = this.getSonarrUrlAndParams().apiKey;
+//    let parmams = this.getSonarrUrlAndParams().params;
     if ( url && apiKey ) {
-      return this.http.get( url + path, { search: params } ).map( resp => resp.json() );
+      console.log( params.toString() );
+      return Observable.ajax( url + path + '?' + params.toString() ).map( resp => resp.response );
+//      return this.http.get( url + path, { search: params } ).map( resp => resp.json() );
     } else {
       //goto config page when url or api key is not found
       this.router.navigate( [ '/config' ] );
@@ -32,7 +36,7 @@ export class SonarrService {
     }
   }
 
-  private getSonarrUrlAndParams(): {url: string, params: URLSearchParams, apiKey: string} {
+  private getSonarrUrlAndParams(): { url: string, params: URLSearchParams, apiKey: string } {
     let params         = new URLSearchParams();
     let url            = this.storage.getSonarrConfig().getFullUrl() + "/api/";
     let apiKey: string = this.storage.getSonarrConfig().apiKey;
@@ -47,20 +51,20 @@ export class SonarrService {
     params.set( 'start', this.util.formatDate( new Date(), null ) );
     params.set( 'end', this.util.formatDate( new Date(), this.storage.getSonarrConfig().daysInCalendar ) );
     return this.get( "/calendar", params )
-        .do( (resp => {
-          this.storage.setItem( 'calendar', resp );
-        }) ).startWith( this.storage.getItem( 'calendar' ) );
+      .do( (resp => {
+        this.storage.setItem( 'calendar', resp );
+      }) ).startWith( this.storage.getItem( 'calendar' ) );
   }
 
-  getWanted( page: number = 0 ): Observable<{pageSize: number, page: number, records: Array<SonarrSeriesEpisode>, totalRecords: number}> {
+  getWanted( page: number = 0 ): Observable<{ pageSize: number, page: number, records: Array<SonarrSeriesEpisode>, totalRecords: number }> {
     let params = this.getSonarrUrlAndParams().params;
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
     params.set( 'page', String( page + 1 ) );
     // params.set('end', this.util.formatDate(new Date(), this.storage.getSonarrConfig().daysInCalendar));
     return this.get( "/wanted/missing", params )
-        .do( (resp => {
-          this.storage.setItem( 'missing', resp );
-        }) ).startWith( this.storage.getItem( 'missing' ) )
+      .do( (resp => {
+        this.storage.setItem( 'missing', resp );
+      }) ).startWith( this.storage.getItem( 'missing' ) )
   }
 
   getSeries(): Observable<Array<SonarrSeriesModel>> {
@@ -68,10 +72,12 @@ export class SonarrService {
     params.set( 'pageSize', String( this.storage.getSonarrConfig().wantedItems ) );
     params.set( 'sort_by', 'sortTitle' );
     params.set( 'order', 'asc' );
-    return this.get( "/series", params ).map(data => data.sort(this.seriesComparator))
-        .do( (resp => {
-          this.storage.setItem( 'series', resp );
-        }) ).startWith( this.storage.getItem( 'series' ) );
+    return this.get( "/series", params ).map( data => {
+      data.sort( this.seriesComparator )
+    } )
+      .do( (resp => {
+        this.storage.setItem( 'series', resp );
+      }) ).startWith( this.storage.getItem( 'series' ) );
   }
 
   getEpisodesForSeries( seriesId: number ): Observable<Array<SonarrSeriesEpisode>> {
@@ -84,12 +90,12 @@ export class SonarrService {
 
   getHistory( page: number = 0 ): Observable<Array<any>> {
     let params = this.getSonarrUrlAndParams().params;
-    params.set( 'pageSize', String(this.storage.getSonarrConfig().historyItems) );
+    params.set( 'pageSize', String( this.storage.getSonarrConfig().historyItems ) );
     params.set( 'page', String( page + 1 ) );
-    return this.get( "/history", params ).map(resp => resp.records)
-        .do( (resp => {
-          this.storage.setItem( 'history', resp );
-        }) ).startWith( this.storage.getItem( 'history' ) );
+    return this.get( "/history", params ).map( resp => resp.records )
+      .do( (resp => {
+        this.storage.setItem( 'history', resp );
+      }) ).startWith( this.storage.getItem( 'history' ) );
   }
 
   getSeriesUrl( series: SonarrSeriesModel, type: 'banner' | 'poster' ) {
@@ -122,18 +128,22 @@ export class SonarrService {
   }
 
   // comparator to sort seasons by seasonNumber
-  seriesComparator(a:SonarrSeriesModel, b:SonarrSeriesModel) {
-    if (a.status != b.status) {
-      if (a.status < b.status)
+  seriesComparator( a: SonarrSeriesModel, b: SonarrSeriesModel ) {
+    if ( a.status != b.status ) {
+      if ( a.status < b.status ) {
         return -1;
-      if (a.status > b.status)
+      }
+      if ( a.status > b.status ) {
         return 1;
+      }
       return 0;
     }
-    if (a.sortTitle < b.sortTitle)
+    if ( a.sortTitle < b.sortTitle ) {
       return -1;
-    if (a.sortTitle > b.sortTitle)
+    }
+    if ( a.sortTitle > b.sortTitle ) {
       return 1;
+    }
     return 0;
   }
 

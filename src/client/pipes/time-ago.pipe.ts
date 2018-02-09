@@ -3,13 +3,13 @@
  */
 /* angular2-moment (c) 2015, 2016 Uri Shaked / MIT Licence */
 
-import {Pipe, ChangeDetectorRef, PipeTransform, OnDestroy, NgZone} from '@angular/core';
+import { ChangeDetectorRef, NgZone, OnDestroy, Pipe, PipeTransform } from '@angular/core';
 import moment from 'moment/moment';
 
 // under systemjs, moment is actually exported as the default export, so we account for that
-const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default || moment;
+//const momentConstructor: (value?: any) => moment.Moment = (<any>moment).default || moment;
 
-@Pipe({name: 'timeAgo', pure: false})
+@Pipe( { name: 'timeAgo', pure: false } )
 export class TimeAgoPipe implements PipeTransform, OnDestroy {
   private currentTimer: number;
 
@@ -18,17 +18,18 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
   private lastOmitSuffix: boolean;
   private lastText: string;
 
-  constructor(private cdRef: ChangeDetectorRef, private ngZone: NgZone) {
+  constructor( private cdRef: ChangeDetectorRef, private ngZone: NgZone ) {
   }
 
-  transform(value: Date | moment.Moment, omitSuffix?: boolean): string {
-    if (this.hasChanged(value, omitSuffix)) {
-      this.lastTime = this.getTime(value);
-      this.lastValue = value;
+  transform( value: Date | moment.Moment, omitSuffix?: boolean ): string {
+    return "";
+    if ( this.hasChanged( value, omitSuffix ) ) {
+      this.lastTime       = this.getTime( value );
+      this.lastValue      = value;
       this.lastOmitSuffix = omitSuffix;
       this.removeTimer();
       this.createTimer();
-      this.lastText = momentConstructor(value).from(momentConstructor(), omitSuffix);
+      this.lastText = moment( value ).from( moment(), omitSuffix );
 
     } else {
       this.createTimer();
@@ -43,58 +44,58 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
 
 
   private createTimer() {
-    if (this.currentTimer) {
+    if ( this.currentTimer ) {
       return;
     }
-    const momentInstance = momentConstructor(this.lastValue);
+    const momentInstance = moment( this.lastValue );
 
-    const timeToUpdate = this.getSecondsUntilUpdate(momentInstance) * 1000;
-    this.currentTimer = this.ngZone.runOutsideAngular(() => {
-      if (typeof window !== 'undefined') {
-        return window.setTimeout(() => {
-          this.lastText = momentConstructor(this.lastValue).from(momentConstructor(), this.lastOmitSuffix);
+    const timeToUpdate = this.getSecondsUntilUpdate( momentInstance ) * 1000;
+    this.currentTimer  = this.ngZone.runOutsideAngular( () => {
+      if ( typeof window !== 'undefined' ) {
+        return window.setTimeout( () => {
+          this.lastText = moment( this.lastValue ).from( moment(), this.lastOmitSuffix );
 
           this.currentTimer = null;
-          this.ngZone.run(() => this.cdRef.markForCheck());
-        }, timeToUpdate);
+          this.ngZone.run( () => this.cdRef.markForCheck() );
+        }, timeToUpdate );
       } else {
         return null;
       }
-    });
+    } );
   }
 
 
   private removeTimer() {
-    if (this.currentTimer) {
-      window.clearTimeout(this.currentTimer);
+    if ( this.currentTimer ) {
+      window.clearTimeout( this.currentTimer );
       this.currentTimer = null;
     }
   }
 
-  private getSecondsUntilUpdate(momentInstance: moment.Moment) {
-    const howOld = Math.abs(momentConstructor().diff(momentInstance, 'minute'));
-    if (howOld < 1) {
+  private getSecondsUntilUpdate( momentInstance: moment.Moment ) {
+    const howOld = Math.abs( moment().diff( momentInstance, 'minute' ) );
+    if ( howOld < 1 ) {
       return 1;
-    } else if (howOld < 60) {
+    } else if ( howOld < 60 ) {
       return 30;
-    } else if (howOld < 180) {
+    } else if ( howOld < 180 ) {
       return 300;
     } else {
       return 3600;
     }
   }
 
-  private hasChanged(value: Date | moment.Moment, omitSuffix?: boolean) {
-    return this.getTime(value) !== this.lastTime || omitSuffix !== this.lastOmitSuffix;
+  private hasChanged( value: Date | moment.Moment, omitSuffix?: boolean ) {
+    return this.getTime( value ) !== this.lastTime || omitSuffix !== this.lastOmitSuffix;
   }
 
-  private getTime(value: Date | moment.Moment) {
-    if (moment.isDate(value)) {
+  private getTime( value: Date | moment.Moment ) {
+    if ( moment.isDate( value ) ) {
       return value.getTime();
-    } else if (moment.isMoment(value)) {
+    } else if ( moment.isMoment( value ) ) {
       return value.valueOf();
     } else {
-      return momentConstructor(value).valueOf();
+      return moment( value ).valueOf();
     }
   }
 }

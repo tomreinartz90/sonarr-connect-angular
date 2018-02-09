@@ -3,7 +3,7 @@ import { SonarrService } from "../../shared/sonarr.service";
 import { fadeInOut } from "../../shared/animation.util";
 import groupBy from "lodash/groupBy";
 import sortBy from "lodash/sortBy";
-import reverse from "lodash/reverse";
+
 @Component( {
   selector: 'my-history',
   templateUrl: 'history.component.html',
@@ -28,7 +28,7 @@ export class HistoryComponent implements OnInit {
         return data[ key ];
       } );
       this.history = this.history.map( set => sortBy( set, 'id' ) );
-      this.history = reverse( sortBy( this.history, ( set ) => set[ 0 ].id ) );
+//      this.history = reverse( sortBy( this.history, ( set ) => set[ 0 ].id ) );
     } );
   }
 

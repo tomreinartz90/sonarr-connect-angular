@@ -14,7 +14,8 @@ export class StorageService {
   }
 
   getItem( key: string ) {
-    return JSON.parse( this.storage.getItem( key ) );
+    let data = this.storage.getItem( key );
+    return data ? JSON.parse( data ) : null;
   }
 
   getSonarrConfig() {

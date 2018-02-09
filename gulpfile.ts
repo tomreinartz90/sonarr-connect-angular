@@ -1,7 +1,7 @@
 import * as util from "gulp-util";
 import * as runSequence from "run-sequence";
 import Config from "@maxxton/build-tools/tools/config";
-import { loadTasks, loadCompositeTasks } from "@maxxton/build-tools/tools/utils";
+import { loadCompositeTasks, loadTasks } from "@maxxton/build-tools/tools/utils";
 
 
 loadTasks( Config.SEED_TASKS_DIR );
@@ -15,7 +15,7 @@ let firstRun = true;
 Config.gulp.task( 'clean.once', ( done: any ) => {
   if ( firstRun ) {
     firstRun = false;
-    runSequence( 'clean.dev', 'clean.coverage', done );
+    runSequence( '_clean.dev', '_clean.coverage', done );
   } else {
     util.log( 'Skipping clean on rebuild' );
     done();

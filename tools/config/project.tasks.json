@@ -9,13 +9,13 @@
   ],
   "build.dev": [
     "clean.once",
-    "move.locales",
-    "move.package.json",
-    "build.assets.dev",
-    "build.assets.lib",
-    "build.html_css",
-    "build.js.dev",
-    "build.index.dev"
+    "_move.locales",
+    "_move.package.json",
+    "_build.assets.dev",
+    "_build.assets.lib",
+    "_build.html_css",
+    "_build.js.dev",
+    "_build.index.dev"
   ]
 }
 
